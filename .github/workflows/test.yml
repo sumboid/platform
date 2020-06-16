@@ -38,6 +38,8 @@ jobs:
         node-version: 14
         registry-url: 'https://registry.npmjs.org'
         always-auth: true  
+      
+    - name: Publish npms
       run: yarn workspace @anticrm/platform publish --access public --tag dev --new-version 0.1.0-dev.${BUILD_NUMBER}
       env:
         NODE_AUTH_TOKEN: ${{secrets.npm_token}}
