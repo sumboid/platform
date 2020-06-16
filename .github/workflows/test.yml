@@ -8,7 +8,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build & test
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 14
+        registry-url: 'https://registry.npmjs.org'
+
+    - name: Build
       run: |
         yarn install
         yarn workspace @anticrm/platform build 
@@ -16,10 +21,13 @@ jobs:
         yarn workspace @anticrm/platform-core-plugin build
         yarn workspace @anticrm/platform-core-model build
 
+    - name: Test
+      run: |
         yarn workspace @anticrm/platform run test
         yarn workspace @anticrm/platform-core-model run test
         yarn workspace @anticrm/platform-core-i18n run test
         yarn workspace @anticrm/platform-ui run test
+
     - name: Lint
       run: |
         yarn workspace @anticrm/platform run lint
@@ -32,15 +40,9 @@ jobs:
       uses: einaregilsson/build-number@v2 
       with:
         token: ${{secrets.github_token}}   
-
-    - uses: actions/setup-node@v1
-      with:
-        node-version: 14
-        registry-url: 'https://registry.npmjs.org'
-        always-auth: true  
       
     - name: Publish npms
-      run: yarn workspace @anticrm/platform publish --access public --tag dev --new-version 0.1.0-dev.${BUILD_NUMBER}
+      run: yarn workspace @anticrm/platform publish --access public --tag dev --no-commit-hooks --new-version 0.1.0-dev.${BUILD_NUMBER}
       env:
         NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
