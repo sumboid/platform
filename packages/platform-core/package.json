@@ -1,6 +1,6 @@
 {
   "name": "@anticrm/platform-core",
-  "version": "0.1.0",
+  "version": "0.1.0-dev.1",
   "description": "Anticrm Platform Core",
   "private": true,
   "main": "lib/index.js",
