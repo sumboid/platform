@@ -1,6 +1,6 @@
 {
   "name": "@anticrm/platform",
-  "version": "0.1.0-dev.3",
+  "version": "0.1.0-dev.4",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "author": "Andrey Platov <andrey.v.platov@gmail.com>",
