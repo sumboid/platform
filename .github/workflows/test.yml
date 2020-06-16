@@ -11,6 +11,11 @@ jobs:
     - name: Build & test
       run: |
         yarn install
+        yarn workspace @anticrm/platform build && \
+        yarn workspace @anticrm/platform-core build && \
+        yarn workspace @anticrm/platform-core-plugin build && \
+        yarn workspace @anticrm/platform-core-model build && \
+
         yarn workspace @anticrm/platform run test
         yarn workspace @anticrm/platform-core-model run test
         yarn workspace @anticrm/platform-core-i18n run test
@@ -23,8 +28,4 @@ jobs:
         yarn workspace @anticrm/platform-ui run lint
     - name: Run build
       run: |
-        yarn workspace @anticrm/platform build && \
-        yarn workspace @anticrm/platform-core build && \
-        yarn workspace @anticrm/platform-core-plugin build && \
-        yarn workspace @anticrm/platform-core-model build && \
         yarn workspace @anticrm/dev-boot run build
