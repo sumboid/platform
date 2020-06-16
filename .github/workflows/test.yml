@@ -42,7 +42,7 @@ jobs:
         token: ${{secrets.github_token}}   
       
     - name: Publish npms
-      run: yarn workspace @anticrm/platform publish --access public --tag dev --no-commit-hooks --new-version 0.1.0-dev.${BUILD_NUMBER}
+      run: yarn workspace @anticrm/platform publish --access public --tag dev --no-git-tag-version --new-version 0.1.0-dev.${BUILD_NUMBER}
       env:
         NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
