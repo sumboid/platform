@@ -29,3 +29,23 @@ jobs:
     - name: Run build
       run: |
         yarn workspace @anticrm/dev-boot run build
+
+  publish-npm:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+
+      - name: Generate build number
+        id: buildnumber
+        uses: einaregilsson/build-number@v2 
+        with:
+          token: ${{secrets.github_token}}   
+
+      - run: yarn workspace @anticrm/platform publish --access public --tag dev --new-version 0.1.0-dev.${BUILD_NUMBER}
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
