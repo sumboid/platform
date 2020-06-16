@@ -3,7 +3,6 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./lib",
-    "esModuleInterop": true
   },
   "references": [
     {
@@ -11,9 +10,6 @@
     },
     {
       "path": "../platform-core"
-    },
-    {
-      "path": "../platform-core-plugin"
     },
   ]
 }

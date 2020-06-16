@@ -18,8 +18,9 @@ import {
   PropertyType, Emb, Doc, Obj, Ref, EClass, Class,
   AllAttributes, ModelDb, Property, RefTo, CoreDomain
 } from '@anticrm/platform-core'
+import { MemDb } from '@anticrm/platform-core-plugin'
+
 import core from '.'
-import { MemDb } from '../memdb'
 
 type Layout = { [key: string]: PropertyType }
 
@@ -30,7 +31,7 @@ function str (value: string): Property<string> {
 class Builder {
   private memdb: ModelDb
 
-  constructor (memdb?: ModelDb) {
+  constructor(memdb?: ModelDb) {
     this.memdb = memdb ?? new MemDb()
   }
 

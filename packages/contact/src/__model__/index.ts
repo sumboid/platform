@@ -14,7 +14,7 @@
 //
 
 import { Ref, Class, Type } from '@anticrm/platform-core'
-import { extendIds } from '@anticrm/platform-core/src/__model__/utils'
+import { extendIds } from '@anticrm/platform-core-model'
 import { IntlString } from '@anticrm/platform-core-i18n'
 
 import contact from '..'

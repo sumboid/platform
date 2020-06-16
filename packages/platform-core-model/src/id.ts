@@ -15,7 +15,7 @@
 
 import core, {
   Obj, Ref, Class, Type, BagOf, ArrayOf, InstanceOf, Emb
-} from '..'
+} from '@anticrm/platform-core'
 
 import { extendIds } from './utils'
 

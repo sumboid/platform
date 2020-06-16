@@ -14,8 +14,7 @@
 //
 
 import { Ref, Class, Doc } from '@anticrm/platform-core'
-import { MemDb } from '@anticrm/platform-core/src/memdb'
-import { ClientService } from '@anticrm/platform-core/src/client'
+import { MemDb, ClientService } from '@anticrm/platform-core-plugin'
 import { MongoClient, Db } from 'mongodb'
 
 

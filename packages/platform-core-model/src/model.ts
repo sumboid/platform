@@ -13,10 +13,10 @@
 // limitations under the License.
 //
 
-import core from '.'
+import core from './id'
 import {
   Obj, Doc, Class, InstanceOf, Type, Emb, Ref, RefTo
-} from '..'
+} from '@anticrm/platform-core'
 import Builder from './builder'
 export { Builder }
 

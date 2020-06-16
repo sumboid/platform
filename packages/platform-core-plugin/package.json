@@ -1,5 +1,5 @@
 {
-  "name": "@anticrm/platform-core",
+  "name": "@anticrm/platform-core-plugin",
   "version": "0.1.0",
   "description": "Anticrm Platform Core",
   "private": true,

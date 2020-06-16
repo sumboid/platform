@@ -13,7 +13,7 @@
 // limitations under the License.
 //
 
-import { extendIds } from '@anticrm/platform-core/src/__model__/utils'
+import { extendIds } from '@anticrm/platform-core-model'
 
 import ui from '..'
 

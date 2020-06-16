@@ -13,9 +13,8 @@
 // limitations under the License.
 //
 
-import { Ref, Doc, Class, Obj, PropertyType } from '.'
-import { generateId } from './objectid'
-import { attributeKey } from './plugin'
+import { Ref, Doc, Class, Obj, PropertyType } from '@anticrm/platform-core'
+import { generateId, attributeKey } from './utils'
 
 export type Layout = { [key: string]: PropertyType }
 

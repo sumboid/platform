@@ -14,14 +14,13 @@
 //
 
 import contact from '.'
-import core from '@anticrm/platform-core/src/__model__'
+import core, { Builder } from '@anticrm/platform-core-model'
 import business from '@anticrm/platform-business/src/__model__'
 import ui from '@anticrm/platform-ui/src/__model__'
 import workbench from '@anticrm/platform-workbench/src/__model__'
 import { Ref, Class, Type } from '@anticrm/platform-core'
 import { ClassUIDecorator, Form } from '@anticrm/platform-ui'
 import { Contact, Person } from '..'
-import Builder from '@anticrm/platform-core/src/__model__/builder'
 
 export default async (S: Builder) => {
 

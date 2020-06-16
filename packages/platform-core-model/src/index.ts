@@ -13,11 +13,10 @@
 // limitations under the License.
 //
 
-import { extendIds } from '@anticrm/platform-core-model'
+import { extendIds } from './utils'
+import Builder from './builder'
+import core from './id'
+import model from './model'
 
-import workbench from '..'
-
-export default extendIds(workbench, {
-  class: {
-  }
-})
+export default core
+export { Builder, model, extendIds }

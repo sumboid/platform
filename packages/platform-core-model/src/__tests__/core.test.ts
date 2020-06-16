@@ -16,10 +16,8 @@
 /* eslint-env jest */
 
 import { Platform } from '@anticrm/platform'
-import startPlugin from '../plugin'
-import model from '../__model__/model'
-import Builder from '../__model__/builder'
-import core from '../__model__'
+import startPlugin from '@anticrm/platform-core-plugin'
+import core, { model, Builder } from '..'
 
 const DOC = 1 // see `plugin.ts`
 

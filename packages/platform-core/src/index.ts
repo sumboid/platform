@@ -20,13 +20,13 @@ import {
 
 // P R O P E R T I E S
 
-/** 
+/**
  * When we define class, we do not define storage types. E.g. some property may
  * serialize to string, another to number or structure. Howerver we preserve
- * `runtime` types for a property. 
- * 
+ * `runtime` types for a property.
+ *
  * @typeParam T   Property will be of type `T` when instantiated.
- * 
+ *
  * {@link Instance}
  */
 export type Property<T> = { __property: T }
@@ -37,7 +37,6 @@ export type PropertyType = Property<any>
   | undefined
   | PropertyType[]
   | { [key: string]: PropertyType }
-
 
 export type Resolve<T> = T extends Resource<infer X> ? Property<Promise<X>> : never
 // export type Preserve<T> = T extends Resource<infer X> ? Property<Resource<X>> : never
@@ -185,13 +184,11 @@ export default plugin('core' as Plugin<CoreService>, {}, {
     BagOf_exert: '' as Resource<(this: Instance<BagOf<any>>) => Promise<Exert>>,
     InstanceOf_exert: '' as Resource<(this: Instance<InstanceOf<Emb>>) => Promise<Exert>>,
     Metadata_exert: '' as Resource<(this: Instance<Type<Metadata<any>>>) => Promise<Exert>>,
-    Resource_exert: '' as Resource<(this: Instance<Type<any>>) => Promise<Exert>>,
+    Resource_exert: '' as Resource<(this: Instance<Type<any>>) => Promise<Exert>>
 
     // Adapter_adapt: '' as Resource<(this: Instance<Adapter>) => Promise<Resource<any>> | undefined>
   },
   native: {
     StaticResource: '' as Resource<Object>
-  },
+  }
 })
-
-

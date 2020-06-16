@@ -14,7 +14,7 @@
 //
 
 import contact from '@anticrm/contact'
-import Builder from '@anticrm/platform-core/src/__model__/builder'
+import { Builder } from '@anticrm/platform-core-model'
 
 import { Ref, Property } from '@anticrm/platform-core'
 import { Account, User } from '@anticrm/platform-business'

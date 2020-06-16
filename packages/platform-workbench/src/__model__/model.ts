@@ -14,10 +14,8 @@
 //
 
 import { Ref, Class, Doc } from '@anticrm/platform-core'
-import core from '@anticrm/platform-core/src/__model__'
+import core, { Builder } from '@anticrm/platform-core-model'
 import workbench from '.'
-
-import Builder from '@anticrm/platform-core/src/__model__/builder'
 
 export default (S: Builder) => {
 

@@ -14,8 +14,7 @@
 //
 
 import { Type } from '@anticrm/platform-core'
-import core from '@anticrm/platform-core/src/__model__'
-import Builder from '@anticrm/platform-core/src/__model__/builder'
+import core, { Builder } from '@anticrm/platform-core-model'
 
 import i18n from '.'
 

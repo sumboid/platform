@@ -16,7 +16,7 @@
 import { Session, Type } from '@anticrm/platform-core'
 import { IntlString } from '..'
 
-import CoreBuilder from '@anticrm/platform-core/src/__model__/builder'
+import { Builder as CoreBuilder } from '@anticrm/platform-core-model'
 import i18n from '.'
 
 export default class extends CoreBuilder {

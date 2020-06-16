@@ -17,19 +17,14 @@ import { Platform, Resource, Metadata } from '@anticrm/platform'
 import core, {
   CoreService, Obj, Ref, Class, BagOf, InstanceOf, PropertyType,
   Instance, Type, Emb, StaticResource, Exert, Property
-} from '.'
+} from '@anticrm/platform-core'
 import { MemDb } from './memdb'
 import { createClient, createNullClient } from './client'
 import { createSession } from './session'
 
-// TODO: Platform.getResourceInfo
-export function attributeKey (_class: Ref<Class<Obj>>, key: string): string {
-  const index = _class.indexOf(':')
-  const dot = _class.indexOf('.')
-  const plugin = _class.substring(index + 1, dot)
-  const cls = _class.substring(dot + 1)
-  return plugin + '|' + cls + '|' + key
-}
+
+export { MemDb } from './memdb'
+export { ClientService } from './client'
 
 /*!
  * Anticrm Platform™ Core Plugin

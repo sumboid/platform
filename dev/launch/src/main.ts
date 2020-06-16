@@ -46,7 +46,7 @@ platform.setMetadata(mc.metadata.Applications, [
   storybook.component.Storybook
 ])
 
-platform.addLocation(core, () => import(/* webpackChunkName: "platform-core" */ '@anticrm/platform-core/src/plugin'))
+platform.addLocation(core, () => import(/* webpackChunkName: "platform-core" */ '@anticrm/platform-core-plugin'))
 platform.addLocation(i18n, () => import(/* webpackChunkName: "platform-core-i18n" */ '@anticrm/platform-core-i18n/src/plugin'))
 platform.addLocation(ui, () => import(/* webpackChunkName: "platform-ui" */ '@anticrm/platform-ui/src/plugin'))
 platform.addLocation(vue, () => import(/* webpackChunkName: "platform-vue" */ '@anticrm/platform-vue/src/plugin'))

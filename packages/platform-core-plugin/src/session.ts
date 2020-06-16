@@ -13,11 +13,11 @@
 // limitations under the License.
 //
 
-import core, { Doc, Ref, Class, Obj, Emb, Instance, Type, Property, Session, PropertyType, Adapter } from '.'
+import core, { Doc, Ref, Class, Obj, Emb, Instance, Type, Property, Session, PropertyType, Adapter } from '@anticrm/platform-core'
 import { MemDb, Layout } from './memdb'
-import { generateId } from './objectid'
+import { generateId } from './utils'
 import { Platform, Resource, ResourceKind } from '@anticrm/platform'
-import { attributeKey } from './plugin'
+import { attributeKey } from './utils'
 
 export function createSession (platform: Platform, modelDb: MemDb): Session {
 

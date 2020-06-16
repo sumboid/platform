@@ -13,8 +13,8 @@
 // limitations under the License.
 //
 
-import { makeRequest, getResponse } from '@anticrm/platform/src/rpc'
-import { Ref, Class, Doc } from '.'
+import { makeRequest, getResponse } from '@anticrm/platform'
+import { Ref, Class, Doc } from '@anticrm/platform-core'
 
 export interface ClientService {
   find (_class: Ref<Class<Doc>>, query: {}): Promise<Doc[]>

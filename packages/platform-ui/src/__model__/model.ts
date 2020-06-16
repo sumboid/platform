@@ -13,13 +13,11 @@
 // limitations under the License.
 //
 
-import core from '@anticrm/platform-core/src/__model__'
+import core, { Builder } from '@anticrm/platform-core-model'
 import { ClassKind } from '@anticrm/platform-core'
 import i18n from '@anticrm/platform-core-i18n/src/__model__'
 import ui from '.'
 import { ComponentKind } from '..'
-
-import Builder from '@anticrm/platform-core/src/__model__/builder'
 
 export default (S: Builder) => {
   S.createClass(ui.class.TypeUIDecorator, core.class.Type, {

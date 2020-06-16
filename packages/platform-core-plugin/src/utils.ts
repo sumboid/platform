@@ -13,6 +13,8 @@
 // limitations under the License.
 //
 
+import { Ref, Class, Obj } from '@anticrm/platform-core'
+
 function toHex (value: number, chars: number): string {
   const result = value.toString(16)
   if (result.length < chars) {
@@ -36,4 +38,13 @@ function count (): string {
 
 export function generateId (): string {
   return timestamp() + random + count()
+}
+
+// TODO: Platform.getResourceInfo
+export function attributeKey (_class: Ref<Class<Obj>>, key: string): string {
+  const index = _class.indexOf(':')
+  const dot = _class.indexOf('.')
+  const plugin = _class.substring(index + 1, dot)
+  const cls = _class.substring(dot + 1)
+  return plugin + '|' + cls + '|' + key
 }

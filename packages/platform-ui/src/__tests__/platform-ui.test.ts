@@ -20,12 +20,13 @@ import { ClassUIDecorator, Asset, ComponentKind } from '..'
 import i18n, { IntlString } from '@anticrm/platform-core-i18n'
 import { verifyTranslation, modelTranslation } from '@anticrm/platform-core-i18n/src/__model__/utils'
 
-import core from '@anticrm/platform-core/src/__model__'
 import ui from '../__model__/'
 
-import Builder from '@anticrm/platform-core/src/__model__/builder'
+import core, { model as coreModel, Builder } from '@anticrm/platform-core-model'
+// import core from '@anticrm/platform-core/src/__model__'
+// import Builder from '@anticrm/platform-core/src/__model__/builder'
+// import coreModel from '@anticrm/platform-core/src/__model__/model'
 
-import coreModel from '@anticrm/platform-core/src/__model__/model'
 import i18nModel from '@anticrm/platform-core-i18n/src/__model__/model'
 import uiModel from '@anticrm/platform-ui/src/__model__/model'
 
@@ -34,7 +35,7 @@ type StringType = Property<string>
 describe('session', () => {
   const platform = new Platform()
   platform.addLocation(i18n, () => import('@anticrm/platform-core-i18n/src/plugin'))
-  platform.addLocation(core, () => import('@anticrm/platform-core/src/plugin'))
+  platform.addLocation(core, () => import('@anticrm/platform-core-plugin'))
   platform.addLocation(ui, () => import('../plugin'))
 
   const S = new Builder()

@@ -307,3 +307,39 @@ export function plugin<P extends Service, D extends PluginDependencies, N extend
 //     return Object.fromEntries(result) as { [key: string]: any }
 //   })
 // }
+
+// R P C
+
+export interface Request {
+  id: string | number | null
+  meth: string
+  params?: any[]
+}
+
+export interface RpcError {
+  code: number
+  message: string
+  data?: any
+}
+
+export interface Response {
+  id: string | number | null
+  result?: any
+  error?: RpcError
+}
+
+export function makeRequest (request: Request): string {
+  return JSON.stringify(request)
+}
+
+export function getRequest (req: string): Request {
+  return JSON.parse(req as string)
+}
+
+export function makeResponse (response: Response): string {
+  return JSON.stringify(response)
+}
+
+export function getResponse (res: string): Response {
+  return JSON.parse(res as string)
+}

@@ -13,9 +13,7 @@
 // limitations under the License.
 //
 
-import Builder from '@anticrm/platform-core/src/__model__/builder'
-
-import coreModel from '@anticrm/platform-core/src/__model__/model'
+import { model as coreModel, Builder } from '@anticrm/platform-core-model'
 import i18nModel from '@anticrm/platform-core-i18n/src/__model__/model'
 import businessModel from '@anticrm/platform-business/src/__model__/model'
 import uiModel from '@anticrm/platform-ui/src/__model__/model'

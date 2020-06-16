@@ -17,12 +17,12 @@ import { Platform, Plugin, Service, plugin } from '@anticrm/platform'
 import { IntlString } from '..'
 import { verifyTranslation, modelTranslation } from '../__model__/utils'
 
-import core from '@anticrm/platform-core/src/__model__'
+import core, { model as metaModel, Builder } from '@anticrm/platform-core-model'
 import i18n from '../__model__'
 
 import { Ref, Class, Obj, Doc, StringType } from '@anticrm/platform-core'
 
-import metaModel, { Builder } from '@anticrm/platform-core/src/__model__/model'
+// import metaModel, { Builder } from '@anticrm/platform-core-model'
 import i18nModel from '../__model__/model'
 
 interface Person extends Doc {
@@ -56,7 +56,7 @@ const test = plugin(
 describe('i18n', () => {
   const platform = new Platform()
   // platform.addLocation(db, () => import('@anticrm/platform-db/src/memdb'))
-  platform.addLocation(core, () => import('@anticrm/platform-core/src/plugin'))
+  platform.addLocation(core, () => import('@anticrm/platform-core-plugin'))
   platform.addLocation(i18n, () => import('../plugin'))
   // platform.setResolver('native', core.id)
 
