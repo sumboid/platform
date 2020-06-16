@@ -8,14 +8,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Run tests
+    - name: Build & test
       run: |
         yarn install
+        yarn workspace @anticrm/platform build && \
+        yarn workspace @anticrm/platform-core build && \
+        yarn workspace @anticrm/platform-core-plugin build && \
+        yarn workspace @anticrm/platform-core-model build && \
+
         yarn workspace @anticrm/platform run test
         yarn workspace @anticrm/platform-core run test
         yarn workspace @anticrm/platform-core-i18n run test
         yarn workspace @anticrm/platform-ui run test
-    - name: Run lint
+    - name: Lint
       run: |
         yarn workspace @anticrm/platform run lint
         yarn workspace @anticrm/platform-core run lint
@@ -23,6 +28,4 @@ jobs:
         yarn workspace @anticrm/platform-ui run lint
     - name: Run build
       run: |
-        yarn workspace @anticrm/platform run build
-        yarn workspace @anticrm/platform-core run build
         yarn workspace @anticrm/dev-boot run build

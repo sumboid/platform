@@ -14,6 +14,12 @@
 #  limitations under the License.
 #
 
+# B U I L D  P A C K A G E S
+yarn workspace @anticrm/platform build && \
+yarn workspace @anticrm/platform-core build && \
+yarn workspace @anticrm/platform-core-plugin build && \
+yarn workspace @anticrm/platform-core-model build && \
+
 # T E S T  P A C K A G E S
 yarn workspace @anticrm/platform run test && \
 yarn workspace @anticrm/platform-core-model run test && \
@@ -27,9 +33,7 @@ yarn workspace @anticrm/platform-core run lint $1 && \
 yarn workspace @anticrm/platform-core-i18n run lint $1 && \
 yarn workspace @anticrm/platform-ui run lint $1 && \
 
-# B U I L D  P A C K A G E S
-yarn workspace @anticrm/platform run build && \
-yarn workspace @anticrm/platform-core run build && \
+# B U I L D  B O O T
 yarn workspace @anticrm/dev-boot run build && \
 
 # B U I L D  P R O D  M E T A D A T A
