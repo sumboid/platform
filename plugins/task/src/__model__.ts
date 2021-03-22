@@ -15,9 +15,18 @@
 
 import core, { ArrayOf$, Builder, Class$, extendIds, InstanceOf$, Mixin$, Primary, Prop, RefTo$ } from '@anticrm/model'
 import _task, {
-  PrioritizedTask, Task, TASK_STATUS_OPEN, TaskFieldType, TaskFieldValue, TaskLink, TaskLinkType, TaskTimeDuration,
+  PrioritizedTask,
+  Task,
+  TASK_STATUS_OPEN,
+  TaskFieldType,
+  TaskFieldValue,
+  TaskLink,
+  TaskLinkType,
+  TaskTimeDuration,
   TimeManagedTask,
-  TypedTask, VersionedTask, WorkLog
+  TypedTask,
+  VersionedTask,
+  WorkLog
 } from '.'
 import { IntlString } from '@anticrm/platform-i18n'
 import { User } from '@anticrm/contact'
@@ -93,73 +102,89 @@ export class TTask extends TCollab implements Task {
 
   @UX(task.string.Task_assignee)
   @ArrayOf$()
-  @RefTo$(contact.mixin.User) assignee!: Ref<User>[]
+  @RefTo$(contact.mixin.User)
+  assignee!: Ref<User>[]
 
   @UX(task.string.Task_participants)
   @ArrayOf$()
-  @RefTo$(contact.mixin.User) participants!: Ref<User>[]
+  @RefTo$(contact.mixin.User)
+  participants!: Ref<User>[]
 
   @UX(task.string.Task_labels)
   @ArrayOf$()
-  @RefTo$(task.class.TaskFieldValue) labels!: Ref<TaskFieldValue>[]
+  @RefTo$(task.class.TaskFieldValue)
+  labels!: Ref<TaskFieldValue>[]
 
   @UX(task.string.Task_status, undefined, task.component.StatusPresenter)
   @ArrayOf$()
-  @RefTo$(task.class.TaskFieldValue) status!: Ref<TaskFieldValue>
+  @RefTo$(task.class.TaskFieldValue)
+  status!: Ref<TaskFieldValue>
 }
 
 @Mixin$(task.mixin.TypedTask, task.class.Task)
 class TTypeTask extends TTask implements TypedTask {
   @UX(task.string.Task_type)
   @ArrayOf$()
-  @RefTo$(task.class.TaskFieldValue) type!: Ref<TaskFieldValue>
+  @RefTo$(task.class.TaskFieldValue)
+  type!: Ref<TaskFieldValue>
 }
 
 @Mixin$(task.mixin.PrioritizedTask, task.class.Task)
 class TPrioritizedTask extends TTask implements PrioritizedTask {
   @UX(task.string.Task_priority)
   @ArrayOf$()
-  @RefTo$(task.class.TaskFieldValue) priority!: Ref<TaskFieldValue>
+  @RefTo$(task.class.TaskFieldValue)
+  priority!: Ref<TaskFieldValue>
 }
 
 @Mixin$(task.mixin.TimeManagedTask, task.class.Task)
 class TTimeManagedTask extends TTask implements TimeManagedTask {
   @UX(task.string.Task_estimate)
-  @Prop() estimate!: TaskTimeDuration
+  @Prop()
+  estimate!: TaskTimeDuration
 
   @UX(task.string.Task_remaining)
-  @Prop() remaining!: TaskTimeDuration
+  @Prop()
+  remaining!: TaskTimeDuration
 
   @UX(task.string.Task_worklog)
   @ArrayOf$()
-  @InstanceOf$(task.class.WorkLog) worklog!: WorkLog[]
+  @InstanceOf$(task.class.WorkLog)
+  worklog!: WorkLog[]
 
   @UX(task.string.Task_completeDue)
-  @Prop() completeDue!: DateProperty
+  @Prop()
+  completeDue!: DateProperty
 }
 
 @Mixin$(task.mixin.VersionedTask, task.class.Task)
 class TVersionedTask extends TTask implements VersionedTask {
   @UX(task.string.Task_fixVersion)
-  @ArrayOf$() fixVersion!: string[]
+  @ArrayOf$()
+  fixVersion!: string[]
 
   @UX(task.string.Task_affectsVersion)
-  @ArrayOf$() affectsVersion!: string[]
+  @ArrayOf$()
+  affectsVersion!: string[]
 }
 
-export function model (S: Builder): void {
+export function model(S: Builder): void {
   S.add(TTask, TTaskFieldValue, TTaskLink)
   S.add(TTypeTask, TPrioritizedTask, TVersionedTask, TTimeManagedTask)
 
-  S.createDocument(workbench.class.WorkbenchApplication, {
-    route: 'tasks',
-    label: 'Tasks' as StringProperty,
-    icon: task.icon.Task,
-    component: workbench.component.Application,
-    classes: [task.class.Task],
-    supportSpaces: true,
-    spaceTitle: 'Project'
-  }, task.application.Task)
+  S.createDocument(
+    workbench.class.WorkbenchApplication,
+    {
+      route: 'tasks',
+      label: 'Tasks' as StringProperty,
+      icon: task.icon.Task,
+      component: workbench.component.Application,
+      classes: [task.class.Task],
+      supportSpaces: true,
+      spaceTitle: 'Project'
+    },
+    task.application.Task
+  )
 
   S.mixin(task.class.Task, presentation.mixin.DetailForm, {
     component: task.component.TaskProperties
@@ -212,13 +237,17 @@ export function model (S: Builder): void {
     }
   ]
   for (const s of statuses) {
-    S.createDocument(task.class.TaskFieldValue, {
-      type: TaskFieldType.Status,
-      title: s.title,
-      action: s.action,
-      description: s.description,
-      color: s.color
-    } as TaskFieldValue, s.id)
+    S.createDocument(
+      task.class.TaskFieldValue,
+      {
+        type: TaskFieldType.Status,
+        title: s.title,
+        action: s.action,
+        description: s.description,
+        color: s.color
+      } as TaskFieldValue,
+      s.id
+    )
   }
 
   S.createDocument(presentation.mixin.Viewlet, {

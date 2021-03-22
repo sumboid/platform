@@ -18,11 +18,11 @@ import { DomainIndex, Storage, TxContext, Tx } from '@anticrm/core'
 export class TxIndex implements DomainIndex {
   private readonly storage: Storage
 
-  constructor (storage: Storage) {
+  constructor(storage: Storage) {
     this.storage = storage
   }
 
-  tx (ctx: TxContext, tx: Tx): Promise<any> {
+  tx(ctx: TxContext, tx: Tx): Promise<any> {
     return this.storage.store(ctx, tx)
   }
 }

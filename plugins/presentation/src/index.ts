@@ -105,21 +105,21 @@ export interface GroupModel extends UIModel {
 }
 
 export interface ClassModel {
-  getGroups (): GroupModel[]
+  getGroups(): GroupModel[]
 
-  getGroup (_class: Ref<Class<Obj>>): GroupModel | undefined
+  getGroup(_class: Ref<Class<Obj>>): GroupModel | undefined
 
-  getOwnAttributes (_class: Ref<Class<Obj>>): AttrModel[] // TODO: why do we have this here, but not within Group?
+  getOwnAttributes(_class: Ref<Class<Obj>>): AttrModel[] // TODO: why do we have this here, but not within Group?
 
-  getAttributes (): AttrModel[]
+  getAttributes(): AttrModel[]
 
-  getAttribute (key: string, _class?: Ref<Class<Obj>>): AttrModel | undefined
+  getAttribute(key: string, _class?: Ref<Class<Obj>>): AttrModel | undefined
 
-  filterAttributes (keys: string[]): ClassModel
+  filterAttributes(keys: string[]): ClassModel
 
-  getPrimary (): AttrModel | undefined
+  getPrimary(): AttrModel | undefined
 
-  filterPrimary (): { model: ClassModel, primary: AttrModel | undefined }
+  filterPrimary(): { model: ClassModel; primary: AttrModel | undefined }
 }
 
 export interface CoreDocument extends Document {
@@ -130,57 +130,64 @@ export interface CoreDocument extends Document {
 // S E R V I C E
 
 export interface PresentationService extends Service {
-  getClassModel (_class: Ref<Class<Obj>>, top?: Ref<Class<Obj>>): Promise<ClassModel>
+  getClassModel(_class: Ref<Class<Obj>>, top?: Ref<Class<Obj>>): Promise<ClassModel>
 
   /**
    * Return a component extension registered for specified class, return undefined if not specified.
    */
-  getComponentExtension (_class: Ref<Class<Obj>>, extension: Ref<Mixin<ComponentExtension<VDoc>>>): AnyComponent | undefined
+  getComponentExtension(
+    _class: Ref<Class<Obj>>,
+    extension: Ref<Mixin<ComponentExtension<VDoc>>>
+  ): AnyComponent | undefined
 }
 
-const presentationPlugin = plugin('presentation' as Plugin<PresentationService>, {
-  core: core.id,
-  i18n: i18n.id
-}, {
-  icon: {
-    Finder: '' as Asset,
-    brdBold: '' as Asset,
-    brdItalic: '' as Asset,
-    brdUnder: '' as Asset,
-    brdStrike: '' as Asset,
-    brdCode: '' as Asset,
-    brdUL: '' as Asset,
-    brdOL: '' as Asset,
-    brdLink: '' as Asset,
-    brdAddr: '' as Asset,
-    brdClip: '' as Asset,
-    brdSend: '' as Asset,
-    brdSmile: '' as Asset
+const presentationPlugin = plugin(
+  'presentation' as Plugin<PresentationService>,
+  {
+    core: core.id,
+    i18n: i18n.id
   },
-  class: {
-    UXAttribute: '' as Ref<Class<UXAttribute>>
-  },
-  mixin: {
-    UXObject: '' as Ref<Mixin<UXObject<Doc>>>,
-    Presenter: '' as Ref<Mixin<Presenter<Type>>>,
-    DetailForm: '' as Ref<Mixin<ComponentExtension<VDoc>>>,
+  {
+    icon: {
+      Finder: '' as Asset,
+      brdBold: '' as Asset,
+      brdItalic: '' as Asset,
+      brdUnder: '' as Asset,
+      brdStrike: '' as Asset,
+      brdCode: '' as Asset,
+      brdUL: '' as Asset,
+      brdOL: '' as Asset,
+      brdLink: '' as Asset,
+      brdAddr: '' as Asset,
+      brdClip: '' as Asset,
+      brdSend: '' as Asset,
+      brdSmile: '' as Asset
+    },
+    class: {
+      UXAttribute: '' as Ref<Class<UXAttribute>>
+    },
+    mixin: {
+      UXObject: '' as Ref<Mixin<UXObject<Doc>>>,
+      Presenter: '' as Ref<Mixin<Presenter<Type>>>,
+      DetailForm: '' as Ref<Mixin<ComponentExtension<VDoc>>>,
 
-    // Define a form to create a new instance of specified class.
-    CreateForm: '' as Ref<Mixin<ComponentExtension<VDoc>>>,
-    LookupForm: '' as Ref<Mixin<ComponentExtension<VDoc>>>,
-    Viewlet: '' as Ref<Mixin<Viewlet>>
-  },
-  component: {
-    ObjectBrowser: '' as AnyComponent,
-    Properties: '' as AnyComponent,
-    NumberPresenter: '' as AnyComponent,
-    StringPresenter: '' as AnyComponent,
-    CheckboxPresenter: '' as AnyComponent,
-    RefPresenter: '' as AnyComponent,
-    TablePresenter: '' as AnyComponent,
-    ArrayPresenter: '' as AnyComponent
+      // Define a form to create a new instance of specified class.
+      CreateForm: '' as Ref<Mixin<ComponentExtension<VDoc>>>,
+      LookupForm: '' as Ref<Mixin<ComponentExtension<VDoc>>>,
+      Viewlet: '' as Ref<Mixin<Viewlet>>
+    },
+    component: {
+      ObjectBrowser: '' as AnyComponent,
+      Properties: '' as AnyComponent,
+      NumberPresenter: '' as AnyComponent,
+      StringPresenter: '' as AnyComponent,
+      CheckboxPresenter: '' as AnyComponent,
+      RefPresenter: '' as AnyComponent,
+      TablePresenter: '' as AnyComponent,
+      ArrayPresenter: '' as AnyComponent
+    }
   }
-})
+)
 
 export default presentationPlugin
 

@@ -54,7 +54,7 @@ describe('server', () => {
   let conn: WebSocket
   let server: ServerProtocol
 
-  function initDatabase (db: Db): Promise<any> {
+  function initDatabase(db: Db): Promise<any> {
     const domains = { ...Model } as { [key: string]: Doc[] }
     const ops = [] as Promise<any>[]
     for (const domain in domains) {
@@ -63,7 +63,7 @@ describe('server', () => {
         if (err) {
           console.log(err)
         }
-        ops.push(coll.deleteMany({}).then(() => model.length > 0 ? coll.insertMany(model) : null))
+        ops.push(coll.deleteMany({}).then(() => (model.length > 0 ? coll.insertMany(model) : null)))
       })
     }
     return Promise.all(ops)
@@ -95,7 +95,7 @@ describe('server', () => {
     server = await start(3337, mongodbUri, 'localhost')
   })
 
-  async function connect (): Promise<WebSocket> {
+  async function connect(): Promise<WebSocket> {
     return new Promise((resolve, reject) => {
       conn = new WebSocket('ws://localhost:3337/' + token)
       conn.on('open', () => {
@@ -125,7 +125,7 @@ describe('server', () => {
     expect(conn.readyState).toEqual(WebSocket.OPEN)
   })
 
-  it('should send many requests', (done) => {
+  it('should send many requests', done => {
     const total = 10
     const start = Date.now()
     let received = 0
@@ -137,40 +137,41 @@ describe('server', () => {
       }
     })
     for (let i = 0; i < total; i++) {
-      conn.send(serialize({
-        id: i,
-        method: 'ping',
-        params: []
-      }))
+      conn.send(
+        serialize({
+          id: i,
+          method: 'ping',
+          params: []
+        })
+      )
     }
   })
 
-  it('should send query', (done) => {
+  it('should send query', done => {
     conn.on('message', (msg: string) => {
       const resp = readResponse(msg)
       expect(resp.result instanceof Array).toBeTruthy()
       done()
     })
-    conn.send(serialize({
-      method: 'find',
-      params: [
-        CORE_CLASS_CLASS,
-        {}
-      ]
-    }))
+    conn.send(
+      serialize({
+        method: 'find',
+        params: [CORE_CLASS_CLASS, {}]
+      })
+    )
   })
 
-  it('should load domain', (done) => {
+  it('should load domain', done => {
     conn.on('message', (msg: string) => {
       const resp = readResponse(msg)
       expect(resp.result instanceof Array).toBeTruthy()
       done()
     })
-    conn.send(serialize({
-      method: 'loadDomain',
-      params: [
-        'model'
-      ]
-    }))
+    conn.send(
+      serialize({
+        method: 'loadDomain',
+        params: ['model']
+      })
+    )
   })
 })

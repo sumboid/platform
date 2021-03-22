@@ -49,12 +49,12 @@ class PipeClientSocket implements ClientSocket {
   email: string
   workspace: string
 
-  constructor (email: string, workspace: string) {
+  constructor(email: string, workspace: string) {
     this.email = email
     this.workspace = workspace
   }
 
-  send (response: string): void {
+  send(response: string): void {
     this.responses.push(readRequest(response))
   }
 }
@@ -64,10 +64,10 @@ export interface ClientInfo {
   socket: PipeClientSocket
   ops: Promise<void>[]
   errors: Error[]
-  wait (): void
+  wait(): void
 }
 
-export function createContact (db: Db, email: string, username: string): Promise<any> {
+export function createContact(db: Db, email: string, username: string): Promise<any> {
   const id = generateId() as Ref<Person>
   const user = builder.createDocument(
     contact.class.Person,
@@ -93,11 +93,11 @@ export class ServerSuite {
   wsName: string
   dbClient!: MongoClient
 
-  constructor (wsName: string) {
+  constructor(wsName: string) {
     this.wsName = wsName
   }
 
-  public async start (): Promise<void> {
+  public async start(): Promise<void> {
     this.dbClient = await MongoClient.connect(this.mongodbUri, { useUnifiedTopology: true })
 
     const accounts = this.dbClient.db('accounts')
@@ -112,11 +112,11 @@ export class ServerSuite {
     this.server = await start(0, this.mongodbUri, 'localhost')
   }
 
-  public getWorkspace (wsName: string): Promise<WorkspaceProtocol> {
+  public getWorkspace(wsName: string): Promise<WorkspaceProtocol> {
     return this.server.getWorkspace(wsName)
   }
 
-  public async reInitDB (): Promise<void> {
+  public async reInitDB(): Promise<void> {
     const db = withTenant(this.dbClient, this.wsName)
     for (const c of await db.collections()) {
       await db.dropCollection(c.collectionName)
@@ -125,7 +125,7 @@ export class ServerSuite {
     await this.initDatabase(db)
   }
 
-  initDatabase (db: Db): Promise<any> {
+  initDatabase(db: Db): Promise<any> {
     const domains = { ...Model } as { [key: string]: Doc[] }
     const ops = [] as Promise<any>[]
     for (const domain in domains) {
@@ -134,19 +134,19 @@ export class ServerSuite {
         if (err) {
           console.log(err)
         }
-        ops.push(coll.deleteMany({}).then(() => model.length > 0 ? coll.insertMany(model) : null))
+        ops.push(coll.deleteMany({}).then(() => (model.length > 0 ? coll.insertMany(model) : null)))
       })
     }
     return Promise.all(ops)
   }
 
-  async shutdown (): Promise<void> {
+  async shutdown(): Promise<void> {
     await this.dbClient.close()
     await this.server.shutdown()
     console.log('All stopped')
   }
 
-  async newClients (n: number, ws: Promise<WorkspaceProtocol>): Promise<ClientInfo[]> {
+  async newClients(n: number, ws: Promise<WorkspaceProtocol>): Promise<ClientInfo[]> {
     const clients: ClientInfo[] = []
 
     const broadcast: Broadcaster = {
@@ -155,17 +155,23 @@ export class ServerSuite {
         for (const client of clients) {
           if (client.client !== from) {
             // console.log(`broadcasting to ${client.client.email}`, response)
-            client.ops.push(client.client.send(response).catch((e) => {
-              client.errors.push(e)
-            }))
+            client.ops.push(
+              client.client.send(response).catch(e => {
+                client.errors.push(e)
+              })
+            )
           } else {
             // console.log('notify self about completeness without response')
-            client.ops.push(client.client.send({
-              id: response.id,
-              error: response.error
-            } as Response<any>).catch((e) => {
-              client.errors.push(e)
-            }))
+            client.ops.push(
+              client.client
+                .send({
+                  id: response.id,
+                  error: response.error
+                } as Response<any>)
+                .catch(e => {
+                  client.errors.push(e)
+                })
+            )
           }
         }
       }

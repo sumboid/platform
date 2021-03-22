@@ -25,8 +25,18 @@ import { QueriableStorage } from './queries'
 
 import { Cache } from './cache'
 import {
-  AnyLayout, Class, CoreProtocol, Doc, generateId as genId, MODEL_DOMAIN, Ref, StringProperty, Tx, txContext,
-  TxContextSource, TxProcessor
+  AnyLayout,
+  Class,
+  CoreProtocol,
+  Doc,
+  generateId as genId,
+  MODEL_DOMAIN,
+  Ref,
+  StringProperty,
+  Tx,
+  txContext,
+  TxContextSource,
+  TxProcessor
 } from '@anticrm/core'
 import { CORE_CLASS_REFERENCE, CORE_CLASS_SPACE, CORE_CLASS_TITLE, Space, TITLE_DOMAIN, VDoc } from '@anticrm/domains'
 
@@ -47,8 +57,10 @@ export default async (platform: Platform): Promise<CoreService> => {
   const rpc = rpcService(platform)
 
   const coreProtocol: CoreProtocol = {
-    find: <T extends Doc> (_class: Ref<Class<T>>, query: AnyLayout): Promise<T[]> => rpc.request(RPC_CALL_FIND, _class, query),
-    findOne: <T extends Doc> (_class: Ref<Class<T>>, query: AnyLayout): Promise<T | undefined> => rpc.request(RPC_CALL_FINDONE, _class, query),
+    find: <T extends Doc>(_class: Ref<Class<T>>, query: AnyLayout): Promise<T[]> =>
+      rpc.request(RPC_CALL_FIND, _class, query),
+    findOne: <T extends Doc>(_class: Ref<Class<T>>, query: AnyLayout): Promise<T | undefined> =>
+      rpc.request(RPC_CALL_FINDONE, _class, query),
     tx: (tx: Tx): Promise<any> => rpc.request(RPC_CALL_TX, tx),
     loadDomain: (domain: string): Promise<Doc[]> => rpc.request(RPC_CALL_LOAD_DOMAIN, domain),
     genRefId: (_space: Ref<Space>) => rpc.request(RPC_CALL_GEN_REF_ID, _space)
@@ -90,12 +102,12 @@ export default async (platform: Platform): Promise<CoreService> => {
   // Add a client transaction event listener
   rpc.addEventListener(EventType.TransientTransaction, txs => {
     console.log('process TransientTransaction', txs)
-    for (const tx of (txs as Tx[])) {
+    for (const tx of txs as Tx[]) {
       txProcessor.process(txContext(TxContextSource.ServerTransient), tx)
     }
   })
 
-  function find<T extends Doc> (_class: Ref<Class<T>>, query: AnyLayout): Promise<T[]> {
+  function find<T extends Doc>(_class: Ref<Class<T>>, query: AnyLayout): Promise<T[]> {
     const domainName = model.getDomain(_class)
     const domain = domains.get(domainName)
     if (domain) {
@@ -104,7 +116,7 @@ export default async (platform: Platform): Promise<CoreService> => {
     return cache.find(_class, query)
   }
 
-  function findOne<T extends Doc> (_class: Ref<Class<T>>, query: AnyLayout): Promise<T | undefined> {
+  function findOne<T extends Doc>(_class: Ref<Class<T>>, query: AnyLayout): Promise<T | undefined> {
     const domainName = model.getDomain(_class)
     const domain = domains.get(domainName)
     if (domain) {
@@ -113,7 +125,7 @@ export default async (platform: Platform): Promise<CoreService> => {
     return cache.findOne(_class, query)
   }
 
-  function query<T extends Doc> (_class: Ref<Class<T>>, query: AnyLayout): QueryResult<T> {
+  function query<T extends Doc>(_class: Ref<Class<T>>, query: AnyLayout): QueryResult<T> {
     const domainName = model.getDomain(_class)
     const domain = domains.get(domainName)
     if (domain) {
@@ -122,30 +134,27 @@ export default async (platform: Platform): Promise<CoreService> => {
     return qCache.query(_class, query)
   }
 
-  function generateId () {
+  function generateId() {
     return genId() as Ref<Doc>
   }
 
-  function processTx (tx: Tx): Promise<any> {
+  function processTx(tx: Tx): Promise<any> {
     console.log('processTx', tx)
     const networkComplete = coreProtocol.tx(tx)
-    return Promise.all([
-      networkComplete,
-      txProcessor.process(txContext(TxContextSource.Client, networkComplete), tx)
-    ])
+    return Promise.all([networkComplete, txProcessor.process(txContext(TxContextSource.Client, networkComplete), tx)])
   }
 
-  function getUserId () {
+  function getUserId() {
     return platform.getMetadata(core.metadata.WhoAmI) as StringProperty
   }
 
   const ops = createOperations(model, processTx, getUserId)
 
-  function loadDomain (domain: string): Promise<Doc[]> {
+  function loadDomain(domain: string): Promise<Doc[]> {
     return coreProtocol.loadDomain(domain)
   }
 
-  function genRefId (_space: Ref<Space>): Promise<Ref<VDoc>> {
+  function genRefId(_space: Ref<Space>): Promise<Ref<VDoc>> {
     return coreProtocol.genRefId(_space)
   }
 

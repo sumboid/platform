@@ -57,7 +57,7 @@ export class TUser extends TPerson implements User {
   @Prop() @UX('Аккаунт' as IntlString) account!: string
 }
 
-export function model (S: Builder): void {
+export function model(S: Builder): void {
   S.add(TContact, TPerson, TUser)
 
   S.mixin(contact.class.Person as Ref<Class<Person>>, presentation.mixin.DetailForm, {

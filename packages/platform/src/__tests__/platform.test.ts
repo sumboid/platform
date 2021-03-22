@@ -15,7 +15,18 @@
 
 /* eslint-env jest */
 
-import { createPlatform, getResourceInfo, identify, Metadata, Plugin, Resource, Service, PlatformStatus, Status, Severity } from '..'
+import {
+  createPlatform,
+  getResourceInfo,
+  identify,
+  Metadata,
+  Plugin,
+  Resource,
+  Service,
+  PlatformStatus,
+  Status,
+  Severity
+} from '..'
 
 import { descriptor1, descriptor2, descriptor3, plugin1, plugin1State, plugin2State, plugin3 } from './shared'
 
@@ -48,20 +59,25 @@ describe('platform', () => {
     expect(p1).toBeInstanceOf(Promise)
     expect(plugin1State.parsed).toBe(false)
     expect(plugin1State.started).toBe(false)
-    return p1.then(plugin => { // eslint-disable-line @typescript-eslint/no-unused-vars
+    return p1.then(plugin => {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       expect(plugin1State.parsed).toBe(true)
       expect(plugin1State.started).toBe(true)
     })
   })
 
-  it('should not resolve resource (no plugin location)', (done) => {
-    platform.getResource('resource:NotExists.Resource' as Resource<string>).then(res => { // eslint-disable-line
-      expect(true).toBe(false)
-      done()
-    }).catch(err => {
-      expect(err).toBeInstanceOf(Error)
-      done()
-    })
+  it('should not resolve resource (no plugin location)', done => {
+    platform
+      .getResource('resource:NotExists.Resource' as Resource<string>)
+      .then(res => {
+        // eslint-disable-line
+        expect(true).toBe(false)
+        done()
+      })
+      .catch(err => {
+        expect(err).toBeInstanceOf(Error)
+        done()
+      })
   })
 
   it('should resolve resource', () => {
@@ -88,16 +104,20 @@ describe('platform', () => {
     })
   })
 
-  it('should fail to resolve wrong resource', (done) => {
+  it('should fail to resolve wrong resource', done => {
     const wrongResource = 'resource_wrong:plugin2.Resource' as Resource<string>
-    platform.getResource(wrongResource).then(res => { // eslint-disable-line
-      expect(true).toBe(false)
-      done()
-    }).catch(err => {
-      expect(err).toBeInstanceOf(Error)
-      expect(err.message).toBe(`resource not loaded: ${wrongResource}`)
-      done()
-    })
+    platform
+      .getResource(wrongResource)
+      .then(res => {
+        // eslint-disable-line
+        expect(true).toBe(false)
+        done()
+      })
+      .catch(err => {
+        expect(err).toBeInstanceOf(Error)
+        expect(err.message).toBe(`resource not loaded: ${wrongResource}`)
+        done()
+      })
   })
 
   it('should inject dependencies', () => {
@@ -111,7 +131,9 @@ describe('platform', () => {
   })
 
   it('should fail to get resource info', () => {
-    expect(() => getResourceInfo('bad resource definition' as Resource<string>)).toThrowError('invalid resource id format')
+    expect(() => getResourceInfo('bad resource definition' as Resource<string>)).toThrowError(
+      'invalid resource id format'
+    )
   })
 
   it('should peek resource', () => {
@@ -151,9 +173,11 @@ describe('platform', () => {
       }
     })
 
-    expect(() => platform.loadMetadata(ids.meta, {
-      M1: false
-    })).toThrowError()
+    expect(() =>
+      platform.loadMetadata(ids.meta, {
+        M1: false
+      })
+    ).toThrowError()
   })
 
   it('should set metadata', () => {
@@ -193,7 +217,7 @@ describe('platform', () => {
       isCalled: boolean
       listener: (event: string, data: string) => Promise<void>
 
-      constructor (eventName: string, eventData: string) {
+      constructor(eventName: string, eventData: string) {
         this.eventName = eventName
         this.eventData = eventData
         this.isCalled = false
@@ -206,20 +230,20 @@ describe('platform', () => {
         }
       }
 
-      startListen () {
+      startListen() {
         platform.addEventListener(this.eventName, this.listener)
       }
 
-      stopListen () {
+      stopListen() {
         platform.removeEventListener(this.eventName, this.listener)
       }
 
-      checkCalled () {
+      checkCalled() {
         expect(this.isCalled).toBe(true)
         this.isCalled = false // reset flag for futher checks
       }
 
-      checkNotCalled () {
+      checkNotCalled() {
         expect(this.isCalled).toBe(false)
       }
     }
@@ -278,7 +302,7 @@ describe('platform', () => {
     secondListenerForEvent2.checkNotCalled()
   })
 
-  function testSetPlatformStatus (status: any, expectedSeverity: Severity, expectedMessage: string) {
+  function testSetPlatformStatus(status: any, expectedSeverity: Severity, expectedMessage: string) {
     let listenerCalled = false
     const listener = function (event: string, data: any): Promise<void> {
       listenerCalled = true

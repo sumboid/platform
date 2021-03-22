@@ -57,7 +57,7 @@ class TPerspective extends TDoc implements Perspective {
   @Prop() component!: AnyComponent
 }
 
-export function model (S: Builder): void {
+export function model(S: Builder): void {
   S.add(TWorkbenchApplication, TPerspective)
 
   S.mixin(core.class.Space, ux.mixin.UXObject, {
@@ -80,10 +80,14 @@ export function model (S: Builder): void {
     presenter: workbench.component.SpacePresenter
   })
 
-  S.createDocument(workbench.class.Perspective, {
-    name: 'default',
-    label: 'Default' as IntlString,
-    icon: workbench.icon.DefaultPerspective,
-    component: workbench.component.DefaultPerspective
-  }, workbench.perspective.Default)
+  S.createDocument(
+    workbench.class.Perspective,
+    {
+      name: 'default',
+      label: 'Default' as IntlString,
+      icon: workbench.icon.DefaultPerspective,
+      component: workbench.component.DefaultPerspective
+    },
+    workbench.perspective.Default
+  )
 }

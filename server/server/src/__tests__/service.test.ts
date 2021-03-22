@@ -52,49 +52,58 @@ describe('service', () => {
     expect(spaces.length).toEqual(3)
 
     // Create a private space
-    await client.tx(newCreateTx(
-      {
-        _class: CORE_CLASS_SPACE,
-        name: 'private-space',
-        users: [{ userId: 'test@client1' } as unknown as SpaceUser],
-        isPublic: false
-      } as unknown as Space,
-      'test@client1' as StringProperty
-    )).then(() => {
-      expect(true).toEqual('show not complete sucessfully')
-    }).catch((e) => {
-      expect(e.message).toEqual('Space doesn\'t contain owner. Operation is not allowed')
-    })
+    await client
+      .tx(
+        newCreateTx(
+          ({
+            _class: CORE_CLASS_SPACE,
+            name: 'private-space',
+            users: [({ userId: 'test@client1' } as unknown) as SpaceUser],
+            isPublic: false
+          } as unknown) as Space,
+          'test@client1' as StringProperty
+        )
+      )
+      .then(() => {
+        expect(true).toEqual('show not complete sucessfully')
+      })
+      .catch(e => {
+        expect(e.message).toEqual("Space doesn't contain owner. Operation is not allowed")
+      })
   })
   it('check public space', async () => {
     const ws = server.getWorkspace(wsName)
 
-    const clients = (await server.newClients(2, ws))
+    const clients = await server.newClients(2, ws)
     const c1 = clients[0].client
     const c2 = clients[1].client
 
-    await c1.tx(newCreateTx(
-      {
-        _class: CORE_CLASS_SPACE,
-        name: 'public-space',
-        users: [],
-        isPublic: true
-      } as unknown as Space,
-      'test@client1' as StringProperty
-    ))
+    await c1.tx(
+      newCreateTx(
+        ({
+          _class: CORE_CLASS_SPACE,
+          name: 'public-space',
+          users: [],
+          isPublic: true
+        } as unknown) as Space,
+        'test@client1' as StringProperty
+      )
+    )
 
     const spaces = await c1.find(CORE_CLASS_SPACE, { isPublic: true as Property<boolean, boolean> })
     expect(spaces.length).toEqual(4)
     await clients[1].wait()
 
-    await c1.tx(newCreateTx(
-      {
-        _class: chunter.class.Page,
-        title: 'public-space Page',
-        _space: spaces[0]._id
-      } as unknown as Page,
-      'test@client1' as StringProperty
-    ))
+    await c1.tx(
+      newCreateTx(
+        ({
+          _class: chunter.class.Page,
+          title: 'public-space Page',
+          _space: spaces[0]._id
+        } as unknown) as Page,
+        'test@client1' as StringProperty
+      )
+    )
 
     let pages = await c1.find(chunter.class.Page, {})
     expect(pages.length).toEqual(1)
@@ -106,32 +115,36 @@ describe('service', () => {
   it('check private space', async () => {
     const ws = server.getWorkspace(wsName)
 
-    const clients = (await server.newClients(2, ws))
+    const clients = await server.newClients(2, ws)
     const c1 = clients[0].client
     const c2 = clients[1].client
 
     // Create a private space
-    await c1.tx(newCreateTx(
-      {
-        _class: CORE_CLASS_SPACE,
-        name: 'private-space',
-        users: [{ userId: 'test@client1', owner: true } as unknown as SpaceUser],
-        isPublic: false
-      } as unknown as Space,
-      'test@client1' as StringProperty
-    ))
+    await c1.tx(
+      newCreateTx(
+        ({
+          _class: CORE_CLASS_SPACE,
+          name: 'private-space',
+          users: [({ userId: 'test@client1', owner: true } as unknown) as SpaceUser],
+          isPublic: false
+        } as unknown) as Space,
+        'test@client1' as StringProperty
+      )
+    )
     let spaces = await c1.find(CORE_CLASS_SPACE, { isPublic: false as Property<boolean, boolean> })
     expect(spaces.length).toEqual(1)
     // Let's create task inside private space and check c2 is not recieve it.
 
-    await c1.tx(newCreateTx(
-      {
-        _class: chunter.class.Page,
-        title: 'private-space Page',
-        _space: spaces[0]._id
-      } as unknown as Page,
-      'test@client1' as StringProperty
-    ))
+    await c1.tx(
+      newCreateTx(
+        ({
+          _class: chunter.class.Page,
+          title: 'private-space Page',
+          _space: spaces[0]._id
+        } as unknown) as Page,
+        'test@client1' as StringProperty
+      )
+    )
     let pages = await c1.find(chunter.class.Page, {})
     expect(pages.length).toEqual(1)
 
@@ -148,30 +161,37 @@ describe('service', () => {
   it('create-shared-space', async () => {
     const ws = server.getWorkspace(wsName)
 
-    const clients = (await server.newClients(2, ws))
+    const clients = await server.newClients(2, ws)
     const c1 = clients[0].client
     const c2 = clients[1].client
     // Create a shared private space
-    await c1.tx(newCreateTx(
-      {
-        _class: CORE_CLASS_SPACE,
-        name: 'shared-space',
-        users: [{ userId: 'test@client1', owner: true } as unknown as SpaceUser, { userId: 'test@client2', owner: false } as unknown as SpaceUser],
-        isPublic: false
-      } as unknown as Space,
-      'test@client1' as StringProperty
-    ))
+    await c1.tx(
+      newCreateTx(
+        ({
+          _class: CORE_CLASS_SPACE,
+          name: 'shared-space',
+          users: [
+            ({ userId: 'test@client1', owner: true } as unknown) as SpaceUser,
+            ({ userId: 'test@client2', owner: false } as unknown) as SpaceUser
+          ],
+          isPublic: false
+        } as unknown) as Space,
+        'test@client1' as StringProperty
+      )
+    )
 
     let spaces = await c1.find(CORE_CLASS_SPACE, { name: 'shared-space' as StringProperty })
 
-    await c1.tx(newCreateTx(
-      {
-        _class: chunter.class.Page,
-        title: 'shared-space Page',
-        _space: spaces[0]._id
-      } as unknown as Page,
-      'test@client1' as StringProperty
-    ))
+    await c1.tx(
+      newCreateTx(
+        ({
+          _class: chunter.class.Page,
+          title: 'shared-space Page',
+          _space: spaces[0]._id
+        } as unknown) as Page,
+        'test@client1' as StringProperty
+      )
+    )
 
     // Wait for all to be processed for c2
     await clients[1].wait()

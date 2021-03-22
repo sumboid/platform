@@ -21,7 +21,8 @@ import { taskIds, SubTask, Task, TaskComment } from '@anticrm/core/src/__tests__
 @Class$(taskIds.class.Task, core.class.Doc, MODEL_DOMAIN)
 export class TTask extends TDoc implements Task {
   @Primary()
-  @Prop() name!: string
+  @Prop()
+  name!: string
 
   @Prop() description!: string
 
@@ -69,11 +70,11 @@ export class TTaskComment extends TEmb implements TaskComment {
   oldVersion!: TaskComment[]
 }
 
-export function model (S: Builder): void {
+export function model(S: Builder): void {
   S.add(TTask, TSubTask, TTaskComment)
 }
 
-export function fullModel (S: Builder): void {
+export function fullModel(S: Builder): void {
   S.add(TObj, TEmb, TDoc, TClassifier, TClass, TAttribute, TType, TMixin, TTitle, TVShortID)
   model(S)
 }

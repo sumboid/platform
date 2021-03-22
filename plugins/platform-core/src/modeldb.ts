@@ -16,7 +16,7 @@
 import { MODEL_DOMAIN, Model } from '@anticrm/core'
 
 export class ModelDb extends Model {
-  constructor () {
+  constructor() {
     super(MODEL_DOMAIN)
   }
 }

@@ -40,7 +40,7 @@ export default (platform: Platform, deps: { ui: UIService }): Promise<LoginServi
 
   // platform.setResource(login.component.SignupForm, SignupForm)
 
-  function setLoginInfo (loginInfo: LoginInfo) {
+  function setLoginInfo(loginInfo: LoginInfo) {
     localStorage.setItem(ACCOUNT_KEY, JSON.stringify(loginInfo))
 
     platform.setMetadata(platformIds.metadata.WhoAmI, loginInfo.email)
@@ -51,14 +51,14 @@ export default (platform: Platform, deps: { ui: UIService }): Promise<LoginServi
     // platform.setMetadata(platformIds.metadata.WSPort, loginInfo.port)
   }
 
-  function clearLoginInfo () {
+  function clearLoginInfo() {
     localStorage.removeItem(ACCOUNT_KEY)
 
     platform.setMetadata(platformIds.metadata.WhoAmI, undefined)
     platform.setMetadata(platformIds.metadata.Token, undefined)
   }
 
-  function getLoginInfo (): Promise<LoginInfo | undefined> {
+  function getLoginInfo(): Promise<LoginInfo | undefined> {
     const account = localStorage.getItem(ACCOUNT_KEY)
     if (!account) {
       return Promise.resolve(undefined)
@@ -73,7 +73,7 @@ export default (platform: Platform, deps: { ui: UIService }): Promise<LoginServi
     return Promise.resolve(loginInfo)
   }
 
-  function navigateApp (): Promise<void> {
+  function navigateApp(): Promise<void> {
     const defaultApp = platform.getMetadata(uiPlugin.metadata.DefaultApplication)
     if (defaultApp) {
       uiService.navigateJoin([defaultApp], undefined, undefined)
@@ -81,7 +81,7 @@ export default (platform: Platform, deps: { ui: UIService }): Promise<LoginServi
     return Promise.resolve()
   }
 
-  async function doLogin (username: string, password: string, workspace: string): Promise<Status> {
+  async function doLogin(username: string, password: string, workspace: string): Promise<Status> {
     const request: Request<[string, string, string]> = {
       method: 'login',
       params: [username, password, workspace]
@@ -112,7 +112,7 @@ export default (platform: Platform, deps: { ui: UIService }): Promise<LoginServi
     }
   }
 
-  function doLogout (): Promise<void> {
+  function doLogout(): Promise<void> {
     const token = platform.getMetadata(platformIds.metadata.Token)
     if (token) {
       clearLoginInfo()

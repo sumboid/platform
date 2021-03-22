@@ -17,7 +17,7 @@ import { Storage, TxContext, StringProperty, Doc, Ref, Class, AnyLayout, Model, 
 import { QueryResult, Subscriber, Unsubscriber } from '.'
 
 export interface Domain extends Storage {
-  query<T extends Doc> (_class: Ref<Class<T>>, query: AnyLayout): QueryResult<T>
+  query<T extends Doc>(_class: Ref<Class<T>>, query: AnyLayout): QueryResult<T>
 }
 
 interface Query<T extends Doc> {
@@ -37,20 +37,20 @@ export class QueriableStorage implements Domain {
   private readonly model: Model
   private readonly updateResults: boolean
 
-  constructor (model: Model, store: Storage, updateResults = false) {
+  constructor(model: Model, store: Storage, updateResults = false) {
     this.model = model
     this.proxy = store
     this.updateResults = updateResults
   }
 
-  private refresh<T extends Doc> (query: Query<T>) {
+  private refresh<T extends Doc>(query: Query<T>) {
     this.find(query._class, query.query).then(result => {
       query.results = result
       query.subscriber(result)
     })
   }
 
-  async store (ctx: TxContext, doc: Doc): Promise<void> {
+  async store(ctx: TxContext, doc: Doc): Promise<void> {
     await this.proxy.store(ctx, doc).then(() => {
       for (const q of this.queries.values()) {
         if (this.model.matchQuery(q._class, doc, q.query)) {
@@ -62,7 +62,7 @@ export class QueriableStorage implements Domain {
     })
   }
 
-  updateMatchQuery (_id: Ref<Doc>, q: Query<Doc>, apply: (doc: Doc) => void): boolean {
+  updateMatchQuery(_id: Ref<Doc>, q: Query<Doc>, apply: (doc: Doc) => void): boolean {
     let pos = 0
     for (const r of q.results) {
       if (r._id === _id) {
@@ -81,12 +81,19 @@ export class QueriableStorage implements Domain {
     return false
   }
 
-  push (ctx: TxContext, _class: Ref<Class<Doc>>, _id: Ref<Doc>, _query: AnyLayout | null, attribute: StringProperty, attributes: AnyLayout): Promise<void> {
+  push(
+    ctx: TxContext,
+    _class: Ref<Class<Doc>>,
+    _id: Ref<Doc>,
+    _query: AnyLayout | null,
+    attribute: StringProperty,
+    attributes: AnyLayout
+  ): Promise<void> {
     return this.proxy.push(ctx, _class, _id, _query, attribute, attributes).then(() => {
       for (const q of this.queries.values()) {
         // Find doc, apply attribute and check if it is still matches, if not we need to perform request to server after transaction will be complete.
         // Check if attribute are in query, so it could modify results.
-        if (this.updateMatchQuery(_id, q, (doc) => this.model.pushDocument(doc, _query, attribute, attributes))) {
+        if (this.updateMatchQuery(_id, q, doc => this.model.pushDocument(doc, _query, attribute, attributes))) {
           continue
         }
         // so we potentially need to fetch new matched objects from server, so do so.
@@ -95,11 +102,17 @@ export class QueriableStorage implements Domain {
     })
   }
 
-  update (ctx: TxContext, _class: Ref<Class<Doc>>, _id: Ref<Doc>, _query: AnyLayout | null, attributes: AnyLayout): Promise<void> {
+  update(
+    ctx: TxContext,
+    _class: Ref<Class<Doc>>,
+    _id: Ref<Doc>,
+    _query: AnyLayout | null,
+    attributes: AnyLayout
+  ): Promise<void> {
     return this.proxy.update(ctx, _class, _id, _query, attributes).then(() => {
       for (const q of this.queries.values()) {
         // Find doc, apply update of attributes and check if it is still matches, if not we need to perform request to server after transaction will be complete.
-        if (this.updateMatchQuery(_id, q, (doc) => this.model.updateDocument(doc, _query, attributes))) {
+        if (this.updateMatchQuery(_id, q, doc => this.model.updateDocument(doc, _query, attributes))) {
           continue
         }
         // so we potentially need to fetch new matched objects from server, so do so.
@@ -108,10 +121,10 @@ export class QueriableStorage implements Domain {
     })
   }
 
-  remove (ctx: TxContext, _class: Ref<Class<Doc>>, _id: Ref<Doc>, _query: AnyLayout | null): Promise<void> {
+  remove(ctx: TxContext, _class: Ref<Class<Doc>>, _id: Ref<Doc>, _query: AnyLayout | null): Promise<void> {
     return this.proxy.remove(ctx, _class, _id, _query).then(() => {
       for (const q of this.queries.values()) {
-        if (this.updateMatchQuery(_id, q, (doc) => this.model.removeDocument(doc, _query))) {
+        if (this.updateMatchQuery(_id, q, doc => this.model.removeDocument(doc, _query))) {
           continue
         }
         // so we potentially need to fetch new matched objects from server, so do so.
@@ -120,16 +133,16 @@ export class QueriableStorage implements Domain {
     })
   }
 
-  find<T extends Doc> (_class: Ref<Class<T>>, query: AnyLayout): Promise<T[]> {
+  find<T extends Doc>(_class: Ref<Class<T>>, query: AnyLayout): Promise<T[]> {
     return this.proxy.find(_class, query)
   }
 
-  findOne<T extends Doc> (_class: Ref<Class<T>>, query: AnyLayout): Promise<T | undefined> {
+  findOne<T extends Doc>(_class: Ref<Class<T>>, query: AnyLayout): Promise<T | undefined> {
     return this.proxy.findOne(_class, query)
   }
 
   // TODO: move to platform core
-  query<T extends Doc> (_class: Ref<Class<T>>, query: AnyLayout): QueryResult<T> {
+  query<T extends Doc>(_class: Ref<Class<T>>, query: AnyLayout): QueryResult<T> {
     return {
       subscribe: (subscriber: Subscriber<T>) => {
         const q: Query<Doc> = {

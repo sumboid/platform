@@ -49,7 +49,8 @@ export default chunter
 export class TCollab extends TVDoc implements Collab {
   @ArrayOf$()
   @InstanceOf$(chunter.class.Comment)
-  @UX('Comments' as IntlString, chunter.icon.Chunter) comments?: Comment[]
+  @UX('Comments' as IntlString, chunter.icon.Chunter)
+  comments?: Comment[]
 }
 
 @Class$(chunter.class.Comment, core.class.Emb)
@@ -59,7 +60,8 @@ export class TComment extends TEmb implements Comment {
   @Prop() _createdOn!: Property<number, Date>
 
   @UX('Message' as IntlString, chunter.icon.Chunter)
-  @Prop(core.class.String) message!: string
+  @Prop(core.class.String)
+  message!: string
 }
 
 @Class$(chunter.class.Message, chunter.class.Collab, ChunterDomain.Chunter)
@@ -81,41 +83,53 @@ class TActivityInfo extends TMixin<VDoc> implements ComponentExtension<VDoc> {
   @Prop() component!: any
 }
 
-export function model (S: Builder): void {
+export function model(S: Builder): void {
   S.add(TCollab, TMessage, TComment, TPage, TActivityInfo)
 
   S.mixin(chunter.class.Message, chunter.mixin.ActivityInfo, {
     component: chunter.component.MessageInfo
   })
 
-  S.createDocument(workbench.class.WorkbenchApplication, {
-    route: 'activity',
-    label: 'Activity' as IntlString,
-    icon: chunter.icon.ActivityView,
-    rootComponent: chunter.component.ActivityView,
-    classes: [],
-    supportSpaces: false
-  }, chunter.application.Activity)
+  S.createDocument(
+    workbench.class.WorkbenchApplication,
+    {
+      route: 'activity',
+      label: 'Activity' as IntlString,
+      icon: chunter.icon.ActivityView,
+      rootComponent: chunter.component.ActivityView,
+      classes: [],
+      supportSpaces: false
+    },
+    chunter.application.Activity
+  )
 
-  S.createDocument(workbench.class.WorkbenchApplication, {
-    route: 'chat',
-    label: 'Chat' as IntlString,
-    icon: chunter.icon.ChatView,
-    component: chunter.component.ChatView,
-    classes: [],
-    spaceTitle: 'Channel',
-    supportSpaces: true
-  }, chunter.application.Chat)
+  S.createDocument(
+    workbench.class.WorkbenchApplication,
+    {
+      route: 'chat',
+      label: 'Chat' as IntlString,
+      icon: chunter.icon.ChatView,
+      component: chunter.component.ChatView,
+      classes: [],
+      spaceTitle: 'Channel',
+      supportSpaces: true
+    },
+    chunter.application.Chat
+  )
 
-  S.createDocument(workbench.class.WorkbenchApplication, {
-    route: 'pages',
-    label: 'Pages' as IntlString,
-    icon: chunter.icon.PagesView,
-    component: workbench.component.Application,
-    classes: [chunter.class.Page],
-    spaceTitle: 'Folder',
-    supportSpaces: true
-  }, chunter.application.Pages)
+  S.createDocument(
+    workbench.class.WorkbenchApplication,
+    {
+      route: 'pages',
+      label: 'Pages' as IntlString,
+      icon: chunter.icon.PagesView,
+      component: workbench.component.Application,
+      classes: [chunter.class.Page],
+      spaceTitle: 'Folder',
+      supportSpaces: true
+    },
+    chunter.application.Pages
+  )
 
   S.mixin(chunter.class.Page, presentation.mixin.DetailForm, {
     component: chunter.component.PageProperties
@@ -129,33 +143,45 @@ export function model (S: Builder): void {
     component: chunter.component.SpaceInfo
   })
 
-  S.createDocument(core.class.Space, {
-    name: 'General',
-    description: 'General channel',
-    application: chunter.application.Chat,
-    isPublic: true, // Available for all
-    archived: false,
-    spaceKey: 'GEN',
-    users: []
-  }, workbench.space.General)
+  S.createDocument(
+    core.class.Space,
+    {
+      name: 'General',
+      description: 'General channel',
+      application: chunter.application.Chat,
+      isPublic: true, // Available for all
+      archived: false,
+      spaceKey: 'GEN',
+      users: []
+    },
+    workbench.space.General
+  )
 
-  S.createDocument(core.class.Space, {
-    name: 'Other',
-    description: 'Other space',
-    application: chunter.application.Chat,
-    isPublic: true,
-    spaceKey: 'OVR',
-    archived: false,
-    users: []
-  }, workbench.space.Random)
+  S.createDocument(
+    core.class.Space,
+    {
+      name: 'Other',
+      description: 'Other space',
+      application: chunter.application.Chat,
+      isPublic: true,
+      spaceKey: 'OVR',
+      archived: false,
+      users: []
+    },
+    workbench.space.Random
+  )
 
-  S.createDocument(core.class.Space, {
-    name: 'Home',
-    description: 'Pages home',
-    application: chunter.application.Pages,
-    isPublic: true,
-    spaceKey: 'RAND',
-    archived: false,
-    users: []
-  }, workbench.space.Other)
+  S.createDocument(
+    core.class.Space,
+    {
+      name: 'Home',
+      description: 'Pages home',
+      application: chunter.application.Pages,
+      isPublic: true,
+      spaceKey: 'RAND',
+      archived: false,
+      users: []
+    },
+    workbench.space.Other
+  )
 }

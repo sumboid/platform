@@ -43,11 +43,16 @@ describe('mongo operations', () => {
     const ws = await server.getWorkspace(wsName)
     const model = await ws.getModel()
 
-    const f1 = createSetArrayFilters(model, CORE_CLASS_SPACE, {
-      users: {
-        userId: 'qwe.com' as StringProperty
-      }
-    }, { owner: true as BooleanProperty })
+    const f1 = createSetArrayFilters(
+      model,
+      CORE_CLASS_SPACE,
+      {
+        users: {
+          userId: 'qwe.com' as StringProperty
+        }
+      },
+      { owner: true as BooleanProperty }
+    )
 
     expect(f1).toEqual({
       updateOperation: {
@@ -65,14 +70,19 @@ describe('mongo operations', () => {
     const ws = await server.getWorkspace(wsName)
     const model = await ws.getModel()
 
-    const f1 = createSetArrayFilters(model, task.class.Task, {
-      tasks: {
-        name: 'subtask1' as StringProperty,
-        comments: {
-          _id: '#0' as StringProperty
+    const f1 = createSetArrayFilters(
+      model,
+      task.class.Task,
+      {
+        tasks: {
+          name: 'subtask1' as StringProperty,
+          comments: {
+            _id: '#0' as StringProperty
+          }
         }
-      }
-    }, { author: 'Dart' as StringProperty })
+      },
+      { author: 'Dart' as StringProperty }
+    )
 
     expect(f1).toEqual({
       updateOperation: {
@@ -96,33 +106,36 @@ describe('mongo operations', () => {
       lists: ['val1', 'val2'],
       rate: 20,
       mainTask: createSubtask('main-subtask', 30),
-      tasks: [
-        createSubtask('subtask1', 31),
-        createSubtask('subtask2', 33)
-      ]
+      tasks: [createSubtask('subtask1', 31), createSubtask('subtask2', 33)]
     } as Task
 
-    doc1.tasks![0].comments = [{
-      _id: '#0',
-      message: 'qwe'
-    } as TaskComment]
+    doc1.tasks![0].comments = [
+      {
+        _id: '#0',
+        message: 'qwe'
+      } as TaskComment
+    ]
 
     const processTx = (tx: Tx) => ws.tx(txContext(), tx)
 
     const ops = createOperations(await ws.getModel(), processTx, () => 'qwe' as StringProperty)
 
     const d1 = await ops.create(task.class.Task, (doc1 as unknown) as AnyLayout)
-    const d2 = await ops.update(d1, {
-      tasks: {
-        name: 'subtask1' as StringProperty,
-        comments: {
-          _id: '#0' as StringProperty
+    const d2 = await ops.update(
+      d1,
+      {
+        tasks: {
+          name: 'subtask1' as StringProperty,
+          comments: {
+            _id: '#0' as StringProperty
+          }
         }
+      },
+      {
+        author: 'Dart' as StringProperty,
+        message: 'Vaider is god or bad?' as StringProperty
       }
-    }, {
-      author: 'Dart' as StringProperty,
-      message: 'Vaider is god or bad?' as StringProperty
-    })
+    )
     expect(d2).toBeDefined()
     // Now le's find and check value
 
@@ -136,14 +149,19 @@ describe('mongo operations', () => {
     const ws = await server.getWorkspace(wsName)
     const model = await ws.getModel()
 
-    const f1 = createSetArrayFilters(model, task.class.Task, {
-      tasks: {
-        name: 'subtask1' as StringProperty,
-        comments: {
-          _id: '#0' as StringProperty
+    const f1 = createSetArrayFilters(
+      model,
+      task.class.Task,
+      {
+        tasks: {
+          name: 'subtask1' as StringProperty,
+          comments: {
+            _id: '#0' as StringProperty
+          }
         }
-      }
-    }, { author: 'Dart' as StringProperty })
+      },
+      { author: 'Dart' as StringProperty }
+    )
 
     expect(f1).toEqual({
       updateOperation: {
@@ -167,31 +185,33 @@ describe('mongo operations', () => {
       lists: ['val1', 'val2'],
       rate: 20,
       mainTask: createSubtask('main-subtask', 30),
-      tasks: [
-        createSubtask('subtask1', 31),
-        createSubtask('subtask2', 33)
-      ]
+      tasks: [createSubtask('subtask1', 31), createSubtask('subtask2', 33)]
     } as Task
 
-    doc1.tasks![0].comments = [{
-      _id: '#1',
-      message: 'qwe'
-    } as TaskComment]
+    doc1.tasks![0].comments = [
+      {
+        _id: '#1',
+        message: 'qwe'
+      } as TaskComment
+    ]
 
     const processTx = (tx: Tx) => ws.tx(txContext(), tx)
     const ops = createOperations(await ws.getModel(), processTx, () => 'qwe' as StringProperty)
 
     const d1 = await ops.create(task.class.Task, (doc1 as unknown) as AnyLayout)
-    const d2 = await ops.push(d1,
+    const d2 = await ops.push(
+      d1,
       {
         tasks: {
           name: 'subtask1' as StringProperty
         }
-      }, 'comments' as StringProperty,
+      },
+      'comments' as StringProperty,
       {
         _id: '#2' as StringProperty,
         message: 'qwe-comment' as StringProperty
-      })
+      }
+    )
     expect(d2).toBeDefined()
     // Now le's find and check value
 
@@ -208,22 +228,18 @@ describe('mongo operations', () => {
       lists: ['val1', 'val2'],
       rate: 20,
       mainTask: createSubtask('main-subtask', 30),
-      tasks: [
-        createSubtask('subtask1', 31),
-        createSubtask('subtask2', 33)
-      ]
+      tasks: [createSubtask('subtask1', 31), createSubtask('subtask2', 33)]
     } as Task
 
     const processTx = (tx: Tx) => ws.tx(txContext(), tx)
     const ops = createOperations(await ws.getModel(), processTx, () => 'qwe' as StringProperty)
 
     const d1 = await ops.create(task.class.Task, (doc1 as unknown) as AnyLayout)
-    const d2 = await ops.remove(d1,
-      {
-        tasks: {
-          name: 'subtask2' as StringProperty
-        }
-      })
+    const d2 = await ops.remove(d1, {
+      tasks: {
+        name: 'subtask2' as StringProperty
+      }
+    })
     expect(d2).toBeDefined()
     // Now le's find and check value
 
@@ -231,10 +247,9 @@ describe('mongo operations', () => {
     expect(result.length).toEqual(1)
     expect(result[0].tasks!.length).toEqual(1)
 
-    const d3 = await ops.remove(d1,
-      {
-        mainTask: {}
-      })
+    const d3 = await ops.remove(d1, {
+      mainTask: {}
+    })
     expect(d3).toBeDefined()
     result = await ws.find(task.class.Task, { _id: d1._id })
     expect(result.length).toEqual(1)

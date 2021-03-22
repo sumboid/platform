@@ -1,29 +1,18 @@
 import { redo, undo } from 'prosemirror-history'
-import {
-  chainCommands,
-  exitCode,
-  joinDown,
-  joinUp,
-  lift
-} from 'prosemirror-commands'
+import { chainCommands, exitCode, joinDown, joinUp, lift } from 'prosemirror-commands'
 
 import { EditorState } from 'prosemirror-state'
 
 import { undoInputRule } from 'prosemirror-inputrules'
 
-import {
-  liftListItem,
-  sinkListItem,
-  splitListItem
-} from 'prosemirror-schema-list'
+import { liftListItem, sinkListItem, splitListItem } from 'prosemirror-schema-list'
 
 import { schema } from './schema'
 import { Commands } from './commands'
 
-const mac =
-  typeof navigator !== 'undefined' ? navigator.platform.includes('Mac') : false
+const mac = typeof navigator !== 'undefined' ? navigator.platform.includes('Mac') : false
 
-export function buildKeymap (): { [key: string]: any } {
+export function buildKeymap(): { [key: string]: any } {
   const keys: { [key: string]: any } = {}
 
   const bind = (key: string, cmd: any): void => {

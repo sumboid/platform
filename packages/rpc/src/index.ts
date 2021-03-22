@@ -23,7 +23,7 @@ export class Request<P extends any[]> {
   method: string
   params: P
 
-  constructor (method: string, ...params: P) {
+  constructor(method: string, ...params: P) {
     this.method = method
     this.params = params
   }
@@ -49,19 +49,19 @@ export interface Response<R> {
   clientTx?: Tx[]
 }
 
-export function serialize (object: Request<any> | Response<any>): string {
+export function serialize(object: Request<any> | Response<any>): string {
   return JSON.stringify(object)
 }
 
-export function readResponse<D> (response: string): Response<D> {
+export function readResponse<D>(response: string): Response<D> {
   return JSON.parse(response)
 }
 
-export function readRequest<P extends any[]> (request: string): Request<P> {
+export function readRequest<P extends any[]>(request: string): Request<P> {
   return JSON.parse(request)
 }
 
-export function toStatus (response: Response<any>): Status {
+export function toStatus(response: Response<any>): Status {
   return new Status(Severity.ERROR, response.error?.code as number, response.error?.message as string)
 }
 

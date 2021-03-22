@@ -16,18 +16,21 @@
 import { BagOf$, Class$, InstanceOf$, Mixin$, Prop, RefTo$ } from '../dsl'
 import core from '../index'
 import {
-  AllAttributes, ArrayOf,
+  AllAttributes,
+  ArrayOf,
   Attribute,
   Class,
   Classifier,
   ClassifierKind,
   Doc,
-  Emb, Indices,
+  Emb,
+  Indices,
   Mixin,
   MODEL_DOMAIN,
   Obj,
   PropertyType,
-  Ref, RefTo,
+  Ref,
+  RefTo,
   StringProperty,
   Type
 } from '@anticrm/core'
@@ -64,7 +67,8 @@ export class TClassifier<T extends Obj> extends TDoc implements Classifier<T> {
   @Prop() _kind!: ClassifierKind
 
   @BagOf$()
-  @InstanceOf$(core.class.Emb) _attributes!: AllAttributes<T, Obj>
+  @InstanceOf$(core.class.Emb)
+  _attributes!: AllAttributes<T, Obj>
 
   @RefTo$(core.class.Class) _extends?: Ref<Classifier<Doc>>
 }
@@ -76,8 +80,7 @@ export class TClass<T extends Obj> extends TClassifier<T> implements Class<T> {
 }
 
 @Class$(core.class.Mixin, core.class.Class, MODEL_DOMAIN)
-export class TMixin<T extends Obj> extends TClass<T> implements Mixin<T> {
-}
+export class TMixin<T extends Obj> extends TClass<T> implements Mixin<T> {}
 
 @Class$(core.class.RefTo, core.class.Type, MODEL_DOMAIN)
 export class TRefTo extends TType implements RefTo<Doc> {

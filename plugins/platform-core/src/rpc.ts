@@ -26,8 +26,8 @@ export enum EventType {
 }
 
 export interface RpcService {
-  request<R> (method: string, ...params: any[]): Promise<R>
-  addEventListener (type: EventType, listener: EventListener): void
+  request<R>(method: string, ...params: any[]): Promise<R>
+  addEventListener(type: EventType, listener: EventListener): void
 }
 
 export default (platform: Platform): RpcService => {
@@ -39,17 +39,20 @@ export default (platform: Platform): RpcService => {
   const requests = new Map<ReqId, PromiseInfo>()
   let lastId = 0
 
-  async function createWebsocket () {
+  async function createWebsocket() {
     const host = platform.getMetadata(core.metadata.WSHost)
     const port = platform.getMetadata(core.metadata.WSPort)
 
     const token = platform.getMetadata(core.metadata.Token)
 
     if (!token) {
-      platform.broadcastEvent(PlatformStatus, new Status(Severity.ERROR, PlatformStatusCodes.AUTHENTICATON_REQUIRED, 'Authentication is required'))
+      platform.broadcastEvent(
+        PlatformStatus,
+        new Status(Severity.ERROR, PlatformStatusCodes.AUTHENTICATON_REQUIRED, 'Authentication is required')
+      )
       return Promise.reject(new Error('authentication required'))
     }
-    return new Promise<WebSocket>((resolve) => {
+    return new Promise<WebSocket>(resolve => {
       // Let's sure token is valid one
       const ws = new WebSocket(`ws://${host}:${port}/${token}`)
       ws.onopen = () => {
@@ -69,7 +72,7 @@ export default (platform: Platform): RpcService => {
         const response = readResponse(ev.data)
         if (!response.id) {
           if (response.result) {
-            for (const listener of (listeners.get(EventType.Transaction) || [])) {
+            for (const listener of listeners.get(EventType.Transaction) || []) {
               listener(response.result)
             }
           }
@@ -87,7 +90,7 @@ export default (platform: Platform): RpcService => {
           }
         }
         if (response.clientTx && response.clientTx.length > 0) {
-          for (const listener of (listeners.get(EventType.TransientTransaction) || [])) {
+          for (const listener of listeners.get(EventType.TransientTransaction) || []) {
             listener(response.clientTx)
           }
         }
@@ -97,29 +100,33 @@ export default (platform: Platform): RpcService => {
 
   let websocket: WebSocket | null = null
 
-  async function getWebSocket () {
+  async function getWebSocket() {
     if (websocket === null || websocket.readyState === WebSocket.CLOSED || websocket.readyState === WebSocket.CLOSING) {
       websocket = await createWebsocket()
     }
     return websocket
   }
 
-  async function request<R> (method: string, ...params: any[]): Promise<R> {
+  async function request<R>(method: string, ...params: any[]): Promise<R> {
     return new Promise<any>((resolve, reject) => {
       const id = ++lastId
       requests.set(id, {
         resolve,
         reject
       })
-      getWebSocket().then(ws => {
-        ws.send(serialize({
-          id,
-          method,
-          params
-        }))
-      }).catch(err => {
-        reject(err)
-      })
+      getWebSocket()
+        .then(ws => {
+          ws.send(
+            serialize({
+              id,
+              method,
+              params
+            })
+          )
+        })
+        .catch(err => {
+          reject(err)
+        })
     })
   }
 
@@ -127,7 +134,7 @@ export default (platform: Platform): RpcService => {
 
   return {
     request,
-    addEventListener (type: EventType, listener: EventListener) {
+    addEventListener(type: EventType, listener: EventListener) {
       let val = listeners.get(type)
       if (!val) {
         val = []

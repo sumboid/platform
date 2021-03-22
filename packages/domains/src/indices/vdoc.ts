@@ -14,13 +14,11 @@
 //
 
 import { Model, Storage } from '@anticrm/core'
-import {
-  CORE_CLASS_VDOC
-} from '..'
+import { CORE_CLASS_VDOC } from '..'
 import { PassthroughsIndex } from './filter'
 
 export class VDocIndex extends PassthroughsIndex {
-  constructor (modelDb: Model, storage: Storage) {
+  constructor(modelDb: Model, storage: Storage) {
     super(modelDb, storage, CORE_CLASS_VDOC)
   }
 }

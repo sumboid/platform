@@ -22,7 +22,7 @@ import { CoreService } from '@anticrm/platform-core'
  * @param currentUser - a current user id
  * @param space  - a space to check.
  */
-export function getCurrentUserSpace (currentUser: string, space: Space): SpaceUser | null {
+export function getCurrentUserSpace(currentUser: string, space: Space): SpaceUser | null {
   for (const u of space.users) {
     if (u.userId === currentUser) {
       return u
@@ -31,29 +31,35 @@ export function getCurrentUserSpace (currentUser: string, space: Space): SpaceUs
   return null
 }
 
-export function getSpaceName (space: Space, withTitle = true): string {
+export function getSpaceName(space: Space, withTitle = true): string {
   return (space.isPublic ? '#' : '$') + (withTitle ? space.name : '')
 }
 
 // Join public space
-export function joinSpace (service: Promise<CoreService>, s: Space): void {
-  service.then(cs => cs.push(s, null, 'users' as StringProperty, {
-    userId: cs.getUserId() as StringProperty,
-    owner: false as Property<boolean, boolean>
-  }))
+export function joinSpace(service: Promise<CoreService>, s: Space): void {
+  service.then(cs =>
+    cs.push(s, null, 'users' as StringProperty, {
+      userId: cs.getUserId() as StringProperty,
+      owner: false as Property<boolean, boolean>
+    })
+  )
 }
 
 // Leave public space
-export function leaveSpace (service: Promise<CoreService>, s: Space): void {
-  service.then(cs => cs.remove(s, {
-    users: {
-      userId: cs.getUserId() as StringProperty
-    }
-  }))
+export function leaveSpace(service: Promise<CoreService>, s: Space): void {
+  service.then(cs =>
+    cs.remove(s, {
+      users: {
+        userId: cs.getUserId() as StringProperty
+      }
+    })
+  )
 }
 
-export function archivedSpaceUpdate (service: Promise<CoreService>, s: Space, value: boolean): void {
-  service.then(cs => cs.update(s, null, {
-    archived: value as Property<boolean, boolean>
-  }))
+export function archivedSpaceUpdate(service: Promise<CoreService>, s: Space, value: boolean): void {
+  service.then(cs =>
+    cs.update(s, null, {
+      archived: value as Property<boolean, boolean>
+    })
+  )
 }

@@ -38,33 +38,37 @@ export interface User extends Person {
 // P L U G I N
 
 export interface ContactService extends Service {
-  getUser (account: string): Promise<User>
+  getUser(account: string): Promise<User>
 
-  getAvatar (user: Ref<User>): Asset
+  getAvatar(user: Ref<User>): Asset
 
-  getMyName (): Promise<string>
+  getMyName(): Promise<string>
 }
 
-const contactPlugin = plugin('contact' as Plugin<ContactService>, {
-  core: core.id,
-  ui: ui.id
-}, {
-  icon: {
-    Date: '' as Asset,
-    Phone: '' as Asset,
-    Email: '' as Asset
+const contactPlugin = plugin(
+  'contact' as Plugin<ContactService>,
+  {
+    core: core.id,
+    ui: ui.id
   },
-  component: {
-    PersonProperties: '' as AnyComponent,
-    UserLookup: '' as AnyComponent,
-    LoginWidget: '' as AnyComponent
-  },
-  mixin: {
-    User: '' as Ref<Mixin<User>>
+  {
+    icon: {
+      Date: '' as Asset,
+      Phone: '' as Asset,
+      Email: '' as Asset
+    },
+    component: {
+      PersonProperties: '' as AnyComponent,
+      UserLookup: '' as AnyComponent,
+      LoginWidget: '' as AnyComponent
+    },
+    mixin: {
+      User: '' as Ref<Mixin<User>>
+    }
   }
-})
+)
 export default contactPlugin
 
-export function getContactService (): Promise<ContactService> {
+export function getContactService(): Promise<ContactService> {
   return getPlatform().getPlugin(contactPlugin.id)
 }

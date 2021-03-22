@@ -27,7 +27,9 @@ describe('matching', () => {
     expect(model.matchQuery(taskIds.class.Task, doc1, { name: 'my-space' as StringProperty })).toEqual(true)
   })
   it('match list value', () => {
-    expect(model.matchQuery(taskIds.class.Task, doc1, { lists: ['val1' as StringProperty, 'val2' as StringProperty] })).toEqual(true)
+    expect(
+      model.matchQuery(taskIds.class.Task, doc1, { lists: ['val1' as StringProperty, 'val2' as StringProperty] })
+    ).toEqual(true)
   })
 
   it('match embedded value', () => {
@@ -92,19 +94,27 @@ describe('matching', () => {
 
   it('push a new subtask value', () => {
     const clone = model.createDocument(taskIds.class.Task, doc1)
-    const cloneResult = model.updateDocument(clone, { tasks: { name: 'subtask1' as StringProperty } }, {
-      rate: 44 as Property<number, number>
-    })
+    const cloneResult = model.updateDocument(
+      clone,
+      { tasks: { name: 'subtask1' as StringProperty } },
+      {
+        rate: 44 as Property<number, number>
+      }
+    )
 
     expect(cloneResult.tasks![0].rate).toEqual(44)
   })
 
   it('push a new comment to subtask', () => {
     const clone = model.createDocument(taskIds.class.Task, doc1)
-    const cloneResult = model.pushDocument(clone, { tasks: { name: 'subtask1' as StringProperty } },
-      'comments' as StringProperty, {
+    const cloneResult = model.pushDocument(
+      clone,
+      { tasks: { name: 'subtask1' as StringProperty } },
+      'comments' as StringProperty,
+      {
         message: 'my-msg' as StringProperty
-      })
+      }
+    )
 
     expect(cloneResult.tasks![0].comments!.length).toEqual(1)
   })

@@ -21,7 +21,7 @@ export type Subscriber<T> = (value: T[]) => void
 export type Unsubscriber = () => void
 
 export interface QueryResult<T extends Doc> {
-  subscribe (run: Subscriber<T>): Unsubscriber
+  subscribe(run: Subscriber<T>): Unsubscriber
 }
 
 export type RefFinalizer = (op: () => void) => void
@@ -36,7 +36,7 @@ export interface QueryProtocol {
    * @param _class - object class
    * @param query - query
    */
-  query<T extends Doc> (_class: Ref<Class<T>>, query: AnyLayout): QueryResult<T>
+  query<T extends Doc>(_class: Ref<Class<T>>, query: AnyLayout): QueryResult<T>
 
   /**
    * Perform subscribe to query with some helper finalizer to use
@@ -61,13 +61,13 @@ export interface OperationProtocol {
   /**
    * Perform creation of new document.
    */
-  create<T extends Doc> (_class: Ref<Class<T>>, values: AnyLayout | Doc): Promise<T>
+  create<T extends Doc>(_class: Ref<Class<T>>, values: AnyLayout | Doc): Promise<T>
 
   /**
    * Push new embedded element and return a link to it.
    * If query is specified, will find attribute of embedded object.
    */
-  push<T extends Doc> (doc: T, query: AnyLayout | null, attribute: StringProperty, element: AnyLayout | Doc): Promise<T>
+  push<T extends Doc>(doc: T, query: AnyLayout | null, attribute: StringProperty, element: AnyLayout | Doc): Promise<T>
 
   /**
    * Perform update of document/embedded document inside document.
@@ -75,22 +75,22 @@ export interface OperationProtocol {
    * If query is specified, will find and update embedded object instead.
    *
    */
-  update<T extends Doc> (doc: T, query: AnyLayout | null, values: AnyLayout): Promise<T>
+  update<T extends Doc>(doc: T, query: AnyLayout | null, values: AnyLayout): Promise<T>
 
   /**
    * Perform remove of object or any embedded object value.
    *
    * If query is specified, will find and update embedded object instead.
    */
-  remove<T extends Doc> (doc: T, query: AnyLayout | null): Promise<T>
+  remove<T extends Doc>(doc: T, query: AnyLayout | null): Promise<T>
 }
 
 export interface CoreService extends Service, CoreProtocol, QueryProtocol, OperationProtocol {
-  getModel (): ModelDb
+  getModel(): ModelDb
 
-  generateId (): Ref<Doc>
+  generateId(): Ref<Doc>
 
-  getUserId (): string
+  getUserId(): string
 }
 
 export default plugin(

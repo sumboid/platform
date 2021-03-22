@@ -18,8 +18,12 @@ import { VDoc, CORE_CLASS_VDOC } from '@anticrm/domains'
 import { OperationProtocol } from '.'
 import { newCreateTx, newDeleteTx, newPushTx, newUpdateTx } from './tx'
 
-export function createOperations (model: Model, processTx: (tx: Tx) => Promise<any>, getUserId: () => StringProperty): OperationProtocol {
-  function create<T extends Doc> (_class: Ref<Class<T>>, values: AnyLayout | Doc): Promise<T> {
+export function createOperations(
+  model: Model,
+  processTx: (tx: Tx) => Promise<any>,
+  getUserId: () => StringProperty
+): OperationProtocol {
+  function create<T extends Doc>(_class: Ref<Class<T>>, values: AnyLayout | Doc): Promise<T> {
     const clazz = model.get(_class)
     if (clazz === undefined) {
       return Promise.reject(new Error('Class ' + _class + ' not found'))
@@ -40,22 +44,23 @@ export function createOperations (model: Model, processTx: (tx: Tx) => Promise<a
     return processTx(newCreateTx(doc, getUserId())).then(() => doc)
   }
 
-  function push<T extends Doc> (doc: Doc, query: AnyLayout | null, _attribute: StringProperty, element: AnyLayout | Doc): Promise<T> {
+  function push<T extends Doc>(
+    doc: Doc,
+    query: AnyLayout | null,
+    _attribute: StringProperty,
+    element: AnyLayout | Doc
+  ): Promise<T> {
     return processTx(
       newPushTx(doc._class, doc._id, query || undefined, _attribute, (element as unknown) as AnyLayout, getUserId())
     ).then(() => doc as T)
   }
 
-  function update<T extends Doc> (doc: T, query: AnyLayout | null, values: AnyLayout): Promise<T> {
-    return processTx(
-      newUpdateTx(doc._class, doc._id, query || undefined, values, getUserId())
-    ).then(() => doc as T)
+  function update<T extends Doc>(doc: T, query: AnyLayout | null, values: AnyLayout): Promise<T> {
+    return processTx(newUpdateTx(doc._class, doc._id, query || undefined, values, getUserId())).then(() => doc as T)
   }
 
-  function remove<T extends Doc> (doc: T, query: AnyLayout | null): Promise<T> {
-    return processTx(
-      newDeleteTx(doc._class, doc._id, query || undefined, getUserId())
-    ).then(() => doc as T)
+  function remove<T extends Doc>(doc: T, query: AnyLayout | null): Promise<T> {
+    return processTx(newDeleteTx(doc._class, doc._id, query || undefined, getUserId())).then(() => doc as T)
   }
 
   return {

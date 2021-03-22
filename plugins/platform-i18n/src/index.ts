@@ -16,15 +16,19 @@
 import { Metadata, plugin, Plugin, Resource, Service } from '@anticrm/platform'
 import { PrimitiveType } from 'intl-messageformat'
 
-export type IntlString = Resource<string> & { __intl_string: true }  // eslint-disable-line
+export type IntlString = Resource<string> & { __intl_string: true } // eslint-disable-line
 
 export interface I18n extends Service {
-  loadStrings (translations: { [key: string]: string }): void
-  translate (string: IntlString, params?: Record<string, PrimitiveType> | undefined): Promise<string>
+  loadStrings(translations: { [key: string]: string }): void
+  translate(string: IntlString, params?: Record<string, PrimitiveType> | undefined): Promise<string>
 }
 
-export default plugin('i18n' as Plugin<I18n>, {}, {
-  metadata: {
-    Strings: '' as Metadata<{ [key: string]: string }>
+export default plugin(
+  'i18n' as Plugin<I18n>,
+  {},
+  {
+    metadata: {
+      Strings: '' as Metadata<{ [key: string]: string }>
+    }
   }
-})
+)

@@ -51,7 +51,7 @@ export const taskIds = {
   }
 }
 
-export function createSubtask (name: string, rate = 30): SubTask {
+export function createSubtask(name: string, rate = 30): SubTask {
   return {
     name: name,
     rate: rate,
@@ -64,7 +64,7 @@ export function createSubtask (name: string, rate = 30): SubTask {
  * Create a random task with name specified
  * @param name
  */
-export function createTask (name: string, rate: number, description: string): Task {
+export function createTask(name: string, rate: number, description: string): Task {
   return {
     _id: generateId() as Ref<Doc>,
     _class: taskIds.class.Task,
@@ -83,8 +83,5 @@ export const doc1 = {
   lists: ['val1', 'val2'],
   rate: 20,
   mainTask: createSubtask('main-subtask', 30),
-  tasks: [
-    createSubtask('subtask1', 31),
-    createSubtask('subtask2', 33)
-  ]
+  tasks: [createSubtask('subtask1', 31), createSubtask('subtask2', 33)]
 } as Task

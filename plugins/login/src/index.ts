@@ -28,7 +28,7 @@ export interface LoginInfo {
 
 export const ACCOUNT_KEY = 'anticrm-account'
 
-export function currentAccount (): LoginInfo | null {
+export function currentAccount(): LoginInfo | null {
   const account = localStorage.getItem(ACCOUNT_KEY)
   return account ? JSON.parse(account) : null
 }
@@ -37,32 +37,36 @@ export interface LoginService extends Service {
   /**
    * Perform a login operation to required workspace with user credentials.
    */
-  doLogin (username: string, password: string, workspace: string): Promise<Status>
+  doLogin(username: string, password: string, workspace: string): Promise<Status>
 
   /**
    * Check and auto return login information if available.
    */
-  getLoginInfo (): Promise<LoginInfo | undefined>
+  getLoginInfo(): Promise<LoginInfo | undefined>
 
   /**
    * Do navigate to default application if defined.
    */
-  navigateApp (): void
+  navigateApp(): void
 
   /**
    * Do logout from current logged in account
    */
-  doLogout (): Promise<void>
+  doLogout(): Promise<void>
 }
 
-const login = plugin('login' as Plugin<LoginService>, { ui: ui.id }, {
-  component: {
-    LoginForm: '' as AnyComponent,
-    SignupForm: '' as AnyComponent
-  },
-  metadata: {
-    AccountsUrl: '' as Metadata<string>
+const login = plugin(
+  'login' as Plugin<LoginService>,
+  { ui: ui.id },
+  {
+    component: {
+      LoginForm: '' as AnyComponent,
+      SignupForm: '' as AnyComponent
+    },
+    metadata: {
+      AccountsUrl: '' as Metadata<string>
+    }
   }
-})
+)
 
 export default login

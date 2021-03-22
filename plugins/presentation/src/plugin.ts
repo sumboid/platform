@@ -35,7 +35,7 @@ import ArrayPresenter from './components/internal/presenters/value/ArrayPresente
  * © 2020 Anticrm Platform Contributors. All Rights Reserved.
  * Licensed under the Eclipse Public License, Version 2.0
  */
-export default (platform: Platform, deps: { core: CoreService, i18n: I18n }): Promise<PresentationService> => {
+export default (platform: Platform, deps: { core: CoreService; i18n: I18n }): Promise<PresentationService> => {
   const coreService = deps.core
   const i18nService = deps.i18n
 
@@ -49,7 +49,7 @@ export default (platform: Platform, deps: { core: CoreService, i18n: I18n }): Pr
   platform.setResource(ui.component.TablePresenter, TablePresenter)
   platform.setResource(ui.component.RefPresenter, RefPresenter)
 
-  async function getGroupModel (_class: Ref<Class<Obj>>): Promise<GroupModel> {
+  async function getGroupModel(_class: Ref<Class<Obj>>): Promise<GroupModel> {
     const model = coreService.getModel()
     const clazz = model.get(_class) as Class<Obj>
     const ux = model.as(clazz, ui.mixin.UXObject)
@@ -63,7 +63,7 @@ export default (platform: Platform, deps: { core: CoreService, i18n: I18n }): Pr
     }
   }
 
-  async function getOwnAttrModel (_class: Ref<Class<Obj>>): Promise<AttrModel[]> {
+  async function getOwnAttrModel(_class: Ref<Class<Obj>>): Promise<AttrModel[]> {
     const result = [] as AttrModel[]
     const model = coreService.getModel()
     const clazz = model.get(_class) as Class<Obj>
@@ -140,7 +140,7 @@ export default (platform: Platform, deps: { core: CoreService, i18n: I18n }): Pr
   }
 
   abstract class ClassModelBase implements ClassModel {
-    filterAttributes (keys: string[]): ClassModel {
+    filterAttributes(keys: string[]): ClassModel {
       const filter = {} as { [key: string]: Record<string, unknown> }
       keys.forEach(key => {
         filter[key] = {}
@@ -148,56 +148,56 @@ export default (platform: Platform, deps: { core: CoreService, i18n: I18n }): Pr
       return new AttributeFilter(this, filter)
     }
 
-    abstract getAttribute (key: string, _class?: Ref<Class<Obj>>): AttrModel | undefined
+    abstract getAttribute(key: string, _class?: Ref<Class<Obj>>): AttrModel | undefined
 
-    abstract getGroups (): GroupModel[]
+    abstract getGroups(): GroupModel[]
 
-    abstract getOwnAttributes (_class: Ref<Class<Obj>>): AttrModel[]
+    abstract getOwnAttributes(_class: Ref<Class<Obj>>): AttrModel[]
 
-    abstract getAttributes (): AttrModel[]
+    abstract getAttributes(): AttrModel[]
 
-    abstract getGroup (_class: Ref<Class<Obj>>): GroupModel | undefined
+    abstract getGroup(_class: Ref<Class<Obj>>): GroupModel | undefined
 
-    abstract getPrimary (): AttrModel | undefined
+    abstract getPrimary(): AttrModel | undefined
 
-    abstract filterPrimary (): { model: ClassModel, primary: AttrModel | undefined }
+    abstract filterPrimary(): { model: ClassModel; primary: AttrModel | undefined }
   }
 
   class TClassModel extends ClassModelBase {
     private readonly attributes: AttrModel[]
     private readonly groups: GroupModel[]
 
-    constructor (groups: GroupModel[], attributes: AttrModel[]) {
+    constructor(groups: GroupModel[], attributes: AttrModel[]) {
       super()
       this.attributes = attributes
       this.groups = groups
     }
 
-    getAttributes (): AttrModel[] {
+    getAttributes(): AttrModel[] {
       return this.attributes
     }
 
-    getOwnAttributes (_class: Ref<Class<Obj>>): AttrModel[] {
+    getOwnAttributes(_class: Ref<Class<Obj>>): AttrModel[] {
       return this.attributes.filter(attr => attr._class === _class)
     }
 
-    getAttribute (key: string, _class?: Ref<Class<Obj>>): AttrModel | undefined {
+    getAttribute(key: string, _class?: Ref<Class<Obj>>): AttrModel | undefined {
       return this.attributes.find(attr => attr.key === key && (_class ? _class === attr._class : true))
     }
 
-    getGroups (): GroupModel[] {
+    getGroups(): GroupModel[] {
       return this.groups
     }
 
-    getGroup (_class: Ref<Class<Obj>>): GroupModel | undefined {
+    getGroup(_class: Ref<Class<Obj>>): GroupModel | undefined {
       return this.groups.find(group => group._class === _class)
     }
 
-    getPrimary (): AttrModel | undefined {
+    getPrimary(): AttrModel | undefined {
       return this.attributes.find(attr => attr.primary)
     }
 
-    filterPrimary (): { model: ClassModel, primary: AttrModel | undefined } {
+    filterPrimary(): { model: ClassModel; primary: AttrModel | undefined } {
       const primary = this.getPrimary()
       if (primary !== undefined) {
         return {
@@ -217,49 +217,49 @@ export default (platform: Platform, deps: { core: CoreService, i18n: I18n }): Pr
     private readonly next: ClassModel
     private readonly filter: { [key: string]: Record<string, unknown> }
 
-    constructor (next: ClassModel, filter: { [key: string]: Record<string, unknown> }) {
+    constructor(next: ClassModel, filter: { [key: string]: Record<string, unknown> }) {
       super()
       this.next = next
       this.filter = filter
     }
 
-    getAttribute (key: string, _class?: Ref<Class<Obj>>): AttrModel | undefined {
+    getAttribute(key: string, _class?: Ref<Class<Obj>>): AttrModel | undefined {
       const result = this.next.getAttribute(key, _class)
       if (result) {
         return this.filter[result.key] ? undefined : result
       }
     }
 
-    getGroups (): GroupModel[] {
+    getGroups(): GroupModel[] {
       return this.next.getGroups()
     }
 
-    getGroup (_class: Ref<Class<Obj>>): GroupModel | undefined {
+    getGroup(_class: Ref<Class<Obj>>): GroupModel | undefined {
       return this.next.getGroup(_class)
     }
 
-    getOwnAttributes (_class: Ref<Class<Obj>>): AttrModel[] {
+    getOwnAttributes(_class: Ref<Class<Obj>>): AttrModel[] {
       const result = this.next.getOwnAttributes(_class)
       const filtered = result.filter(attr => !this.filter[attr.key])
       return filtered
     }
 
-    getAttributes (): AttrModel[] {
+    getAttributes(): AttrModel[] {
       const result = this.next.getAttributes()
       const filtered = result.filter(attr => !this.filter[attr.key])
       return filtered
     }
 
-    getPrimary (): AttrModel | undefined {
+    getPrimary(): AttrModel | undefined {
       return this.next.getPrimary()
     }
 
-    filterPrimary (): { model: ClassModel, primary: AttrModel | undefined } {
+    filterPrimary(): { model: ClassModel; primary: AttrModel | undefined } {
       return this.next.filterPrimary()
     }
   }
 
-  async function getClassModel (_class: Ref<Class<Obj>>, top?: Ref<Class<Obj>>): Promise<ClassModel> {
+  async function getClassModel(_class: Ref<Class<Obj>>, top?: Ref<Class<Obj>>): Promise<ClassModel> {
     const model = coreService.getModel()
     const hierarchy = model.getClassHierarchy(_class, top)
     const groupModels = hierarchy.map(_class => getGroupModel(_class as Ref<Class<Obj>>))
@@ -271,7 +271,10 @@ export default (platform: Platform, deps: { core: CoreService, i18n: I18n }): Pr
     return new TClassModel(groups, attributes)
   }
 
-  function getComponentExtension (_class: Ref<Class<Obj>>, extension: Ref<Mixin<ComponentExtension<VDoc>>>): AnyComponent | undefined {
+  function getComponentExtension(
+    _class: Ref<Class<Obj>>,
+    extension: Ref<Mixin<ComponentExtension<VDoc>>>
+  ): AnyComponent | undefined {
     const model = coreService.getModel()
     while (_class) {
       const clazz = model.get(_class) as Class<VDoc>

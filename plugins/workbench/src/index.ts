@@ -41,46 +41,49 @@ export interface WorkbenchApplication extends Application {
   spaceComponent?: AnyComponent // If defined will show component for space selection, instead of default one.
 }
 
-export interface WorkbenchService extends Service {
-}
+export interface WorkbenchService extends Service {}
 
-export default plugin('workbench' as Plugin<WorkbenchService>, {
-  core: core.id,
-  ui: ui.id
-}, {
-  icon: {
-    DefaultPerspective: '' as Asset,
-    Add: '' as Asset,
-    Resize: '' as Asset,
-    Close: '' as Asset,
-    Finder: '' as Asset,
-    Lock: '' as Asset,
-    Sharp: '' as Asset,
-    Burger: '' as Asset,
-    ArrowDown: '' as Asset
+export default plugin(
+  'workbench' as Plugin<WorkbenchService>,
+  {
+    core: core.id,
+    ui: ui.id
   },
-  component: {
-    Workbench: '' as AnyComponent,
-    DefaultPerspective: '' as AnyComponent,
-    CreateSpace: '' as AnyComponent,
-    JoinSpace: '' as AnyComponent,
-    BrowseSpace: '' as AnyComponent,
-    Application: '' as AnyComponent,
-    ApplicationDashboard: '' as AnyComponent,
-    CreateForm: '' as AnyComponent,
+  {
+    icon: {
+      DefaultPerspective: '' as Asset,
+      Add: '' as Asset,
+      Resize: '' as Asset,
+      Close: '' as Asset,
+      Finder: '' as Asset,
+      Lock: '' as Asset,
+      Sharp: '' as Asset,
+      Burger: '' as Asset,
+      ArrowDown: '' as Asset
+    },
+    component: {
+      Workbench: '' as AnyComponent,
+      DefaultPerspective: '' as AnyComponent,
+      CreateSpace: '' as AnyComponent,
+      JoinSpace: '' as AnyComponent,
+      BrowseSpace: '' as AnyComponent,
+      Application: '' as AnyComponent,
+      ApplicationDashboard: '' as AnyComponent,
+      CreateForm: '' as AnyComponent,
 
-    // A table presentation layout
-    TableLayout: '' as AnyComponent,
-    // A card line display layout
-    CardLayout: '' as AnyComponent,
+      // A table presentation layout
+      TableLayout: '' as AnyComponent,
+      // A card line display layout
+      CardLayout: '' as AnyComponent,
 
-    SpacePresenter: '' as AnyComponent
-  },
-  class: {
-    Perspective: '' as Ref<Class<Perspective>>,
-    WorkbenchApplication: '' as Ref<Class<WorkbenchApplication>>
-  },
-  perspective: {
-    Default: '' as Ref<Perspective>
+      SpacePresenter: '' as AnyComponent
+    },
+    class: {
+      Perspective: '' as Ref<Class<Perspective>>,
+      WorkbenchApplication: '' as Ref<Class<WorkbenchApplication>>
+    },
+    perspective: {
+      Default: '' as Ref<Perspective>
+    }
   }
-})
+)

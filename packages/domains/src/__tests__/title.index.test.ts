@@ -16,19 +16,34 @@
 /* eslint-env jest */
 
 import {
-  AnyLayout, Class, Doc, generateId, mixinKey, Model, Property, Ref, StringProperty, txContext
+  AnyLayout,
+  Class,
+  Doc,
+  generateId,
+  mixinKey,
+  Model,
+  Property,
+  Ref,
+  StringProperty,
+  txContext
 } from '@anticrm/core'
 import { data, doc1, taskIds } from '@anticrm/core/src/__tests__/tasks'
 import { TitleIndex } from '../indices/title'
 import {
-  CORE_CLASS_CREATE_TX, CORE_CLASS_DELETE_TX, CORE_CLASS_TITLE, CORE_CLASS_UPDATE_TX, CORE_MIXIN_SHORTID, CreateTx,
-  DeleteTx, UpdateTx
+  CORE_CLASS_CREATE_TX,
+  CORE_CLASS_DELETE_TX,
+  CORE_CLASS_TITLE,
+  CORE_CLASS_UPDATE_TX,
+  CORE_MIXIN_SHORTID,
+  CreateTx,
+  DeleteTx,
+  UpdateTx
 } from '../index'
 
 const model = new Model('vdocs')
 model.loadModel(data)
 
-function newCTx (_class: Ref<Class<Doc>>, _id: Ref<Doc>, object: AnyLayout): CreateTx {
+function newCTx(_class: Ref<Class<Doc>>, _id: Ref<Doc>, object: AnyLayout): CreateTx {
   return {
     _class: CORE_CLASS_CREATE_TX,
     _id: generateId() as Ref<Doc>,
@@ -40,7 +55,7 @@ function newCTx (_class: Ref<Class<Doc>>, _id: Ref<Doc>, object: AnyLayout): Cre
   }
 }
 
-function newUTx (_class: Ref<Class<Doc>>, _id: Ref<Doc>, object: AnyLayout): UpdateTx {
+function newUTx(_class: Ref<Class<Doc>>, _id: Ref<Doc>, object: AnyLayout): UpdateTx {
   return {
     _class: CORE_CLASS_UPDATE_TX,
     _id: generateId() as Ref<Doc>,
@@ -52,7 +67,7 @@ function newUTx (_class: Ref<Class<Doc>>, _id: Ref<Doc>, object: AnyLayout): Upd
   }
 }
 
-function newDTx (_class: Ref<Class<Doc>>, _id: Ref<Doc>): DeleteTx {
+function newDTx(_class: Ref<Class<Doc>>, _id: Ref<Doc>): DeleteTx {
   return {
     _class: CORE_CLASS_DELETE_TX,
     _id: generateId() as Ref<Doc>,
@@ -102,10 +117,13 @@ describe('title-index tests', () => {
 
     const shortIdKey = mixinKey(CORE_MIXIN_SHORTID, 'shortId')
 
-    await index.tx(txContext(), newUTx(taskIds.class.Task, doc1._id, {
-      name: 'new-name' as StringProperty,
-      [shortIdKey]: 'SPACE-2' as StringProperty
-    }))
+    await index.tx(
+      txContext(),
+      newUTx(taskIds.class.Task, doc1._id, {
+        name: 'new-name' as StringProperty,
+        [shortIdKey]: 'SPACE-2' as StringProperty
+      })
+    )
 
     const titles = await memDb.find(CORE_CLASS_TITLE, {})
     expect(titles.length).toEqual(3)

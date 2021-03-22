@@ -26,7 +26,7 @@ export enum TaskFieldType {
   Priority, // 1-high, 2-medium, etc.
   Status = 2,
   Link, // A link category, Blocked by, Caused by, etc.
-  Label// A some labels used by tasks
+  Label // A some labels used by tasks
 }
 
 /**
@@ -151,33 +151,36 @@ export interface VersionedTask extends Task {
   affectsVersion: string[]
 }
 
-export interface TaskService extends Service {
-}
+export interface TaskService extends Service {}
 
 export const TASK_STATUS_OPEN = 'task:status.Open' as Ref<TaskFieldValue>
 
-export default plugin('task' as Plugin<TaskService>, {}, {
-  icon: {
-    Task: '' as Asset,
-    ArrowDown: '' as Asset
-  },
-  class: {
-    Task: '' as Ref<Class<Task>>,
-    TaskFieldValue: '' as Ref<Class<TaskFieldValue>>,
-    TaskLink: '' as Ref<Class<TaskLink>>,
-    WorkLog: '' as Ref<Class<WorkLog>>
-  },
-  mixin: {
-    TypedTask: '' as Ref<Mixin<TypedTask>>,
-    PrioritizedTask: '' as Ref<Mixin<PrioritizedTask>>,
-    VersionedTask: '' as Ref<Mixin<VersionedTask>>,
-    TimeManagedTask: '' as Ref<Mixin<TimeManagedTask>>
-  },
-  component: {
-    TaskProperties: '' as AnyComponent,
-    CreateTask: '' as AnyComponent,
-    TaskInfo: '' as AnyComponent,
-    TaskCardPresenter: '' as AnyComponent,
-    StatusPresenter: '' as AnyComponent
+export default plugin(
+  'task' as Plugin<TaskService>,
+  {},
+  {
+    icon: {
+      Task: '' as Asset,
+      ArrowDown: '' as Asset
+    },
+    class: {
+      Task: '' as Ref<Class<Task>>,
+      TaskFieldValue: '' as Ref<Class<TaskFieldValue>>,
+      TaskLink: '' as Ref<Class<TaskLink>>,
+      WorkLog: '' as Ref<Class<WorkLog>>
+    },
+    mixin: {
+      TypedTask: '' as Ref<Mixin<TypedTask>>,
+      PrioritizedTask: '' as Ref<Mixin<PrioritizedTask>>,
+      VersionedTask: '' as Ref<Mixin<VersionedTask>>,
+      TimeManagedTask: '' as Ref<Mixin<TimeManagedTask>>
+    },
+    component: {
+      TaskProperties: '' as AnyComponent,
+      CreateTask: '' as AnyComponent,
+      TaskInfo: '' as AnyComponent,
+      TaskCardPresenter: '' as AnyComponent,
+      StatusPresenter: '' as AnyComponent
+    }
   }
-})
+)

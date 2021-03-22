@@ -12,11 +12,11 @@ export interface Position {
   bottom: number
 }
 
-export function getFirst (items: CompletionItem[]): CompletionItem {
+export function getFirst(items: CompletionItem[]): CompletionItem {
   return (items.length > 0 ? items[0] : { key: '' }) as CompletionItem
 }
 
-export function calcOffset (element: HTMLElement): number {
+export function calcOffset(element: HTMLElement): number {
   if (element != null) {
     const pp = element.parentElement
     return pp != null ? pp.offsetTop : -1

@@ -14,11 +14,31 @@
 //
 
 import {
-  AnyLayout, Class, Classifier, Doc, DomainIndex, generateId, mixinKey, Model, Ref, Storage, Tx, TxContext
+  AnyLayout,
+  Class,
+  Classifier,
+  Doc,
+  DomainIndex,
+  generateId,
+  mixinKey,
+  Model,
+  Ref,
+  Storage,
+  Tx,
+  TxContext
 } from '@anticrm/core'
 import {
-  CORE_CLASS_CREATE_TX, CORE_CLASS_DELETE_TX, CORE_CLASS_PUSH_TX, CORE_CLASS_TITLE, CORE_CLASS_UPDATE_TX,
-  CORE_MIXIN_SHORTID, CreateTx, DeleteTx, Title, TitleSource, UpdateTx
+  CORE_CLASS_CREATE_TX,
+  CORE_CLASS_DELETE_TX,
+  CORE_CLASS_PUSH_TX,
+  CORE_CLASS_TITLE,
+  CORE_CLASS_UPDATE_TX,
+  CORE_MIXIN_SHORTID,
+  CreateTx,
+  DeleteTx,
+  Title,
+  TitleSource,
+  UpdateTx
 } from '..'
 
 const NULL = '<null>'
@@ -28,12 +48,12 @@ export class TitleIndex implements DomainIndex {
   private readonly storage: Storage
   private readonly primaries = new Map<Ref<Classifier<Doc>>, string>()
 
-  constructor (modelDb: Model, storage: Storage) {
+  constructor(modelDb: Model, storage: Storage) {
     this.modelDb = modelDb
     this.storage = storage
   }
 
-  private getPrimary (_class: Ref<Classifier<Doc>>): string | null {
+  private getPrimary(_class: Ref<Classifier<Doc>>): string | null {
     const cached = this.primaries.get(_class)
     if (cached) return cached === NULL ? null : cached
 
@@ -47,7 +67,7 @@ export class TitleIndex implements DomainIndex {
     return null
   }
 
-  async tx (ctx: TxContext, tx: Tx): Promise<any> {
+  async tx(ctx: TxContext, tx: Tx): Promise<any> {
     switch (tx._class) {
       case CORE_CLASS_CREATE_TX:
         return this.onCreate(ctx, tx as CreateTx)
@@ -63,7 +83,7 @@ export class TitleIndex implements DomainIndex {
     }
   }
 
-  async onCreate (ctx: TxContext, create: CreateTx): Promise<any> {
+  async onCreate(ctx: TxContext, create: CreateTx): Promise<any> {
     await this.updateShortIdRef(ctx, create._objectClass, create._objectId, create.object)
 
     const primary = this.getPrimary(create._objectClass)
@@ -85,13 +105,18 @@ export class TitleIndex implements DomainIndex {
     return this.storage.store(ctx, doc)
   }
 
-  private getPrimaryID (_id: Ref<Doc>): Ref<Doc> {
+  private getPrimaryID(_id: Ref<Doc>): Ref<Doc> {
     return ('primary:' + _id) as Ref<Doc>
   }
 
-  private async updateShortIdRef (ctx: TxContext, _class: Ref<Class<Doc>>, _id: Ref<Doc>, object: AnyLayout): Promise<void> {
+  private async updateShortIdRef(
+    ctx: TxContext,
+    _class: Ref<Class<Doc>>,
+    _id: Ref<Doc>,
+    object: AnyLayout
+  ): Promise<void> {
     const shortIdKey = mixinKey(CORE_MIXIN_SHORTID, 'shortId')
-    const keys = Object.keys(object as any || {})
+    const keys = Object.keys((object as any) || {})
     if (keys.indexOf(shortIdKey) === -1) {
       return
     }
@@ -117,7 +142,7 @@ export class TitleIndex implements DomainIndex {
     }
   }
 
-  async onUpdate (ctx: TxContext, update: UpdateTx): Promise<any> {
+  async onUpdate(ctx: TxContext, update: UpdateTx): Promise<any> {
     await this.updateShortIdRef(ctx, update._objectClass, update._objectId, update._attributes)
 
     const primary = this.getPrimary(update._objectClass)
@@ -134,11 +159,13 @@ export class TitleIndex implements DomainIndex {
     }
     if (updated) {
       // Update a current primary title Title object, since it is address by _objectId
-      return this.storage.update(ctx, CORE_CLASS_TITLE, this.getPrimaryID(update._objectId), null, { title: update._attributes[primary] })
+      return this.storage.update(ctx, CORE_CLASS_TITLE, this.getPrimaryID(update._objectId), null, {
+        title: update._attributes[primary]
+      })
     }
   }
 
-  private async onDelete (ctx: TxContext, deleteTx: DeleteTx): Promise<any> {
+  private async onDelete(ctx: TxContext, deleteTx: DeleteTx): Promise<any> {
     // We need to delete all created Titles based on objectId.
     const docs = await this.storage.find(CORE_CLASS_TITLE, {
       _objectId: deleteTx._objectId,

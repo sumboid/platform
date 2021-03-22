@@ -72,7 +72,7 @@ export class Status {
   code: number
   message: string
 
-  constructor (severity: Severity, code: number, message: string) {
+  constructor(severity: Severity, code: number, message: string) {
     this.severity = severity
     this.code = code
     this.message = message
@@ -86,7 +86,7 @@ export class Status {
 export class PlatformError extends Error {
   readonly status: Status
 
-  constructor (status: Status) {
+  constructor(status: Status) {
     super(status.message)
     this.status = status
   }

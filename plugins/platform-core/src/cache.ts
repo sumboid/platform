@@ -16,29 +16,46 @@
 import { CoreProtocol, TxContext, Storage, AnyLayout, Class, Doc, Ref, StringProperty } from '@anticrm/core'
 
 export class Cache implements Storage {
-  async store (tx: TxContext, doc: Doc): Promise<void> {  // eslint-disable-line
+  async store(tx: TxContext, doc: Doc): Promise<void> {
+    // eslint-disable-line
   }
 
-  async push (tx: TxContext, _class: Ref<Class<Doc>>, _id: Ref<Doc>, _query: AnyLayout | null, attribute: StringProperty, attributes: AnyLayout): Promise<void> { // eslint-disable-line
+  async push(
+    tx: TxContext,
+    _class: Ref<Class<Doc>>,
+    _id: Ref<Doc>,
+    _query: AnyLayout | null,
+    attribute: StringProperty,
+    attributes: AnyLayout
+  ): Promise<void> {
+    // eslint-disable-line
   }
 
-  async update (tx: TxContext, _class: Ref<Class<Doc>>, _id: Ref<Doc>, _query: AnyLayout | null, attributes: AnyLayout): Promise<void> { // eslint-disable-line
+  async update(
+    tx: TxContext,
+    _class: Ref<Class<Doc>>,
+    _id: Ref<Doc>,
+    _query: AnyLayout | null,
+    attributes: AnyLayout
+  ): Promise<void> {
+    // eslint-disable-line
   }
 
-  async remove (tx: TxContext, _class: Ref<Class<Doc>>, doc: Ref<Doc>, _query: AnyLayout | null): Promise<void> { // eslint-disable-line
+  async remove(tx: TxContext, _class: Ref<Class<Doc>>, doc: Ref<Doc>, _query: AnyLayout | null): Promise<void> {
+    // eslint-disable-line
   }
 
   private readonly coreProtocol: CoreProtocol
 
-  constructor (coreProtocol: CoreProtocol) {
+  constructor(coreProtocol: CoreProtocol) {
     this.coreProtocol = coreProtocol
   }
 
-  find<T extends Doc> (_class: Ref<Class<T>>, query: AnyLayout): Promise<T[]> {
+  find<T extends Doc>(_class: Ref<Class<T>>, query: AnyLayout): Promise<T[]> {
     return this.coreProtocol.find(_class, query) as Promise<T[]>
   }
 
-  findOne<T extends Doc> (_class: Ref<Class<T>>, query: AnyLayout): Promise<T | undefined> {
+  findOne<T extends Doc>(_class: Ref<Class<T>>, query: AnyLayout): Promise<T | undefined> {
     return this.coreProtocol.findOne(_class, query) as Promise<T | undefined>
   }
 }

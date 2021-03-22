@@ -29,7 +29,7 @@ let client: MongoClient
 const app = new Koa()
 const router = new Router()
 
-router.post('rpc', '/rpc', async (ctx) => {
+router.post('rpc', '/rpc', async ctx => {
   const request = ctx.request.body
   const method = (methods as { [key: string]: (db: Db, request: Request<any>) => Response<any> })[request.method]
   if (!request.method) {

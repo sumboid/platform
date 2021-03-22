@@ -87,7 +87,7 @@ export class TViewlet extends TDoc implements Viewlet {
   @Prop() component!: AnyComponent
 }
 
-export function model (S: Builder): void {
+export function model(S: Builder): void {
   S.add(TUXAttribute, TPresenter, TUXObject, TDetailForm, TLookupForm, TCreateForm, TViewlet)
 
   S.mixin(core.class.Type, ui.mixin.Presenter, {
@@ -121,8 +121,8 @@ export function model (S: Builder): void {
   })
 }
 
-export function UX (label: IntlString, icon?: Asset, presenter?: AnyComponent): any {
-  function uxProp (target: any, propertyKey: string): void {
+export function UX(label: IntlString, icon?: Asset, presenter?: AnyComponent): any {
+  function uxProp(target: any, propertyKey: string): void {
     const classifier = getClassifier(target)
 
     if (!classifier._mixins) {
@@ -160,9 +160,7 @@ export function UX (label: IntlString, icon?: Asset, presenter?: AnyComponent): 
     }
   }
 
-  function uxClass<C extends { new (): Doc }> (
-    constructor: C
-  ) {
+  function uxClass<C extends { new (): Doc }>(constructor: C) {
     const classifier = getClassifier(constructor.prototype)
     if (!classifier._mixins) {
       classifier._mixins = [ui.mixin.UXObject]

@@ -29,7 +29,7 @@ import { UIService, Asset } from '@anticrm/platform-ui'
  * © 2020 Anticrm Platform Contributors. All Rights Reserved.
  * Licensed under the Eclipse Public License, Version 2.0
  */
-export default (platform: Platform, deps: { core: CoreService, ui: UIService }): Promise<ContactService> => {
+export default (platform: Platform, deps: { core: CoreService; ui: UIService }): Promise<ContactService> => {
   // platform.setResource(contact.component.PersonProperties, PersonProperties)
   // platform.setResource(contact.component.UserLookup, UserLookup)
   // platform.setResource(contact.component.LoginWidget, LoginWidget)
@@ -38,11 +38,11 @@ export default (platform: Platform, deps: { core: CoreService, ui: UIService }):
 
   // const uiService = deps.ui
 
-  function getUser (account: string): Promise<User> {
+  function getUser(account: string): Promise<User> {
     return coreService.findOne(contact.mixin.User, { account: account as StringProperty }) as Promise<User>
   }
 
-  async function getMyName (): Promise<string> {
+  async function getMyName(): Promise<string> {
     const whoAmI = platform.getMetadata(core.metadata.WhoAmI)
     if (!whoAmI) {
       return 'Nobody'
@@ -51,7 +51,7 @@ export default (platform: Platform, deps: { core: CoreService, ui: UIService }):
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function getAvatar (user: Ref<User>): Asset {
+  function getAvatar(user: Ref<User>): Asset {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     return require('../assets/ava2x48.jpg') as Asset
   }

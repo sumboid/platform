@@ -26,13 +26,13 @@ export default (platform: Platform): Promise<I18n> => {
   const strings: Map<IntlString, string> = new Map()
   const imfCache: Map<IntlString, IntlMessageFormat> = new Map()
 
-  function loadStrings (translations: { [key: string]: string }) {
+  function loadStrings(translations: { [key: string]: string }) {
     for (const key in translations) {
       strings.set(key as IntlString, translations[key])
     }
   }
 
-  function translate (string: IntlString, params?: Record<string, PrimitiveType> | undefined): Promise<string> {
+  function translate(string: IntlString, params?: Record<string, PrimitiveType> | undefined): Promise<string> {
     const translation = strings.get(string)
     if (!translation) {
       return Promise.resolve(string)

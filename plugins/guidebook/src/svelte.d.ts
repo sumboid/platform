@@ -27,7 +27,9 @@ declare module '*.svelte' {
     $set: (props: Props) => any
     $on: (event: string, callback: (event: CustomEvent) => any) => any
     $destroy: () => any
-    render: (props?: Props) => {
+    render: (
+      props?: Props
+    ) => {
       html: string
       css: { code: string; map?: string }
       head?: string

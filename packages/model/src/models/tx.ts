@@ -32,7 +32,8 @@ export class TCreateTx extends TTx implements CreateTx {
   @RefTo$(core.class.Class) _objectClass!: Ref<Class<Doc>>
 
   @BagOf$()
-  @InstanceOf$(core.class.Emb) object!: AnyLayout
+  @InstanceOf$(core.class.Emb)
+  object!: AnyLayout
 }
 
 @Class$(core.class.PushTx, core.class.Tx, TX_DOMAIN)
@@ -42,7 +43,8 @@ export class TPushTx extends TTx implements PushTx {
   @Prop() _attribute!: StringProperty
 
   @BagOf$()
-  @InstanceOf$(core.class.Emb) _attributes!: AnyLayout
+  @InstanceOf$(core.class.Emb)
+  _attributes!: AnyLayout
 
   @Prop() _query!: AnyLayout
 }
@@ -53,7 +55,8 @@ export class TUpdateTx extends TTx implements UpdateTx {
   @RefTo$(core.class.Class) _objectClass!: Ref<Class<Doc>>
 
   @BagOf$()
-  @InstanceOf$(core.class.Emb) _attributes!: AnyLayout
+  @InstanceOf$(core.class.Emb)
+  _attributes!: AnyLayout
 
   @Prop() _query!: AnyLayout
 }
