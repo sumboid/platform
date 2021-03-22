@@ -5,7 +5,9 @@
     "build": "tsc --build",
     "test": "echo 'no tests'",
     "start": "ts-node src/index.ts",
-    "lint": "eslint src/**/*.ts"
+    "lint": "eslint src/**/*.ts",
+    "format:check": "prettier --check src/**/*.ts",
+    "format:fix": "prettier --write src/**/*.ts"
   },
   "author": "Anticrm Platform Contributors",
   "license": "EPL-2.0",
@@ -20,7 +22,9 @@
     "@types/koa__cors": "^3.0.1",
     "@types/mongodb": "^3.5.20",
     "babel-jest": "^26.0.1",
+    "eslint-config-prettier": "^8.1.0",
     "jest": "^26.0.1",
+    "prettier": "^2.2.1",
     "typescript": "^3.9.5"
   },
   "dependencies": {

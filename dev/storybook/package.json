@@ -9,7 +9,9 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "test": "echo 'no tests'",
-    "lint": "echo 'no linting'"
+    "lint": "echo 'no linting'",
+    "format:check": "echo 'No formatting check yet'",
+    "format:fix": "echo 'No formatting fix yet'"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

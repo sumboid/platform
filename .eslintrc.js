@@ -6,7 +6,8 @@ module.exports = {
   },
   extends: [
     'plugin:@typescript-eslint/recommended',
-    'standard'
+    'standard',
+    'prettier'
   ],
   globals: {
     Atomics: 'readonly',
@@ -40,11 +41,11 @@ module.exports = {
     '@typescript-eslint/restrict-plus-operands': 'error',
     '@typescript-eslint/require-await': 'error',
     '@typescript-eslint/return-await': 'error',
-    '@typescript-eslint/type-annotation-spacing': ['error', { 'before': false, 'after': true, 'overrides': { 'arrow': { 'before': true, 'after': true }}}],
+    '@typescript-eslint/type-annotation-spacing': ['error', { 'before': false, 'after': true, 'overrides': { 'arrow': { 'before': true, 'after': true } } }],
     '@typescript-eslint/no-unused-vars': ['error', { 'args': 'none' }],
     '@typescript-eslint/no-unused-expressions': 'error',
-    'prefer-arrow-callback': [ 'error', { 'allowUnboundThis': false } ],
-    '@typescript-eslint/no-misused-promises': [ 'error', { 'checksVoidReturn': false } ],
+    'prefer-arrow-callback': ['error', { 'allowUnboundThis': false }],
+    '@typescript-eslint/no-misused-promises': ['error', { 'checksVoidReturn': false }],
   },
   settings: {
     'svelte3/typescript': require('typescript'),

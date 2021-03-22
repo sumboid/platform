@@ -7,7 +7,9 @@
   "scripts": {
     "build": "tsc",
     "test": "echo 'no tests'",
-    "lint": "echo 'no linting'"
+    "lint": "echo 'no linting'",
+    "format:check": "echo 'No formatting check yet'",
+    "format:fix": "echo 'No formatting fix yet'"
   },
   "dependencies": {
     "@anticrm/platform": "^0.2.0",

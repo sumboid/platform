@@ -8,7 +8,9 @@
   "scripts": {
     "build": "tsc",
     "test": "echo 'no tests'",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "format:check": "prettier --check src/**/*.ts",
+    "format:fix": "prettier --write src/**/*.ts"
   },
   "dependencies": {
     "@anticrm/core": "^0.2.0",
